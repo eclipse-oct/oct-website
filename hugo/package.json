@@ -1,0 +1,13 @@
+{
+  "name": "oct-website-hugo",
+  "version": "0.0.0",
+  "main": "none",
+  "private": true,
+  "scripts": {
+    "clean": "npx shx rm -rf ./static/libs",
+    "build": "npm run clean && cross-env NODE_ENV=production  hugo        --config ./config.toml    -b /              -d ../public --gc --minify    ",
+    "watch": "npm run clean && cross-env NODE_ENV=development hugo server --config ./config.toml -D -b localhost:1313 -d ../public --appendPort=false",
+    "watch:gitpod": "npm run clean && cross-env NODE_ENV=development hugo server --config ./config.toml -D -b `gp url 1313` -d ../public --appendPort=false"
+},  "author": "Typefox",
+  "description": ""
+}

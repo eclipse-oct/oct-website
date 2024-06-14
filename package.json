@@ -1,0 +1,17 @@
+{
+  "name": "oct-website",
+  "version": "0.0.0",
+  "main": "none",
+  "scripts": {
+    "watch": "npm run watch --workspace hugo"
+  },
+  "devDependencies": {
+      "shx": "^0.3.4",
+      "cross-env": "^7.0.3"
+  },
+  "author": "Typefox",
+  "description": "",
+  "workspaces": [
+    "hugo"
+  ]
+}
