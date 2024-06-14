@@ -4,7 +4,7 @@ html {
 }
 
 body {
-    height: 100%;
+    height: calc(100% - 95px);;
 }
 
 main {
