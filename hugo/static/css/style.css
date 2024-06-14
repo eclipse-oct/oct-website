@@ -4,13 +4,10 @@ html {
 }
 
 body {
-    height: calc(100% - 95px);;
+    height: 100%;
+    overflow: auto;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     height: 100%;
 }
