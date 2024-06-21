@@ -1,5 +1,6 @@
 ---
 title: "Privacy Policy"
+type: oct
 ---
 
 **21 June 2024**

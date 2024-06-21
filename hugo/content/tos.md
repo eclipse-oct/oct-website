@@ -1,5 +1,6 @@
 ---
 title: "Open Collaboration Tools Website Terms of Use"
+type: oct
 ---
 
 **21 June 2024**
