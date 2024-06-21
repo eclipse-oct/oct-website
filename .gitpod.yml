@@ -1,0 +1,7 @@
+ports:
+  - port: 1313
+    onOpen: open-browser
+
+tasks:
+  - init: npm install
+    command: npm run watch:gitpod --workspace hugo
