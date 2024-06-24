@@ -5,9 +5,13 @@
     {{ partial "oct-head" . }}
 </head>
 
-<body class="">
-    {{ block "main" . }}
-    {{ end }}
+<body>
+    {{ partial "oct-header" . }}
+    <main>
+        {{ block "main" . }}
+        {{ end }}
+    </main>
+    {{ partial "oct-footer" . }}
 </body>
 
 </html>
