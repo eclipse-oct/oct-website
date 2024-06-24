@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "none",
   "scripts": {
+    "build": "npm run build --workspace hugo",
     "watch": "npm run watch --workspace hugo"
   },
   "devDependencies": {
