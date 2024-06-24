@@ -1,5 +1,6 @@
 ---
 title: "Open Collaboration Tools Website Terms of Use"
+layout: "privacy"
 type: oct
 ---
 

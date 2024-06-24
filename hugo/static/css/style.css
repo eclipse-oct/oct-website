@@ -53,14 +53,18 @@ main {
     flex-basis: auto;
 }
 
-.hero-section, .feature-section {
+section {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
 
-.hero-content, .feature-content {
+.hero-section {
+    border-bottom: solid 20px #A50132;
+}
+
+.content {
     display: flex;
     align-items: center;
     justify-content: center;

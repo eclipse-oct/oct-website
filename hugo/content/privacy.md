@@ -1,5 +1,6 @@
 ---
 title: "Privacy Policy"
+layout: "privacy"
 type: oct
 ---
 
