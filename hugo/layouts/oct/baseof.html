@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-    <head>
-        {{ partial "oct-head" . }}
-    </head>
 
-    <body>
-        {{ partial "oct-header" . }}
-        <main>
-            {{ block "main" . }}
-            {{ end }}
-        </main>
-    </body>
+<head>
+    {{ partial "oct-head" . }}
+</head>
+
+<body class="">
+    {{ block "main" . }}
+    {{ end }}
+</body>
+
 </html>
