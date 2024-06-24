@@ -4,10 +4,191 @@ html {
 }
 
 body {
-    height: 100%;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+header, footer {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+}
+
+header {
+    width: 100%;
+    display: flex; 
+    justify-content: center;
+    position: sticky;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    max-width: 1300px;
+    width: 85%;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    margin-left: 1rem;
+    text-decoration: none;
 }
 
 main {
-    height: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: auto;
+}
+
+.hero-section, .feature-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-content, .feature-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    max-width: 1200px;
+    margin-bottom: 50px;
+}
+
+.hero-text {
+    flex: 5;
+}
+
+.hero-text-content {
+    width: 90%;
+}
+
+.hero-text h1, .feature-text h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.hero-image {
+    flex: 4;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+}
+
+.feature-text {
+    width: 300px;
+}
+
+footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    width: 80%;
+    max-width: 640px;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+.barlow-light {
+    font-family: "Barlow", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.barlow-regular {
+    font-family: "Barlow", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.barlow-medium {
+    font-family: "Barlow", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.barlow-semibold {
+    font-family: "Barlow", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.barlow-bold {
+    font-family: "Barlow", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.barlow-extrabold {
+    font-family: "Barlow", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.urbanist-regular {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.urbanist-bold {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.bg-indigo-dark {
+    background-color: #020E22;
+}
+
+.bg-indigo-light {
+    background-color: #CBD3E7;
+}
+
+.bg-red {
+    background-color: #A50132;
+}
+
+.fg-indigo-dark {
+    color: #020E22;
+}
+
+.fg-indigo-light {
+    color: #CBD3E7;
+}
+
+.fg-white {
+    color: #FFFFFF;
+}
+
+.fg-black {
+    color: #000000;
 }
