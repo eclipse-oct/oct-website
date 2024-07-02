@@ -55,6 +55,12 @@ a:hover {
     font-size: 2.5rem;
 }
 
+@media (max-width:768px) {
+    .logo-container h1 {
+        font-size: 2rem;
+    }
+}
+
 .logo-container img {
     width: 110px;
     height: 110px;
@@ -88,6 +94,7 @@ section {
 }
 
 .hero-section {
+    padding-bottom: 50px;
     border-bottom: solid 20px #643B88;
 }
 
@@ -99,6 +106,10 @@ section {
     width: 80%;
     max-width: 1200px;
     margin-top: 75px;
+}
+
+.hero-section .content {
+    margin-top: 35px;
 }
 
 .content-card {
