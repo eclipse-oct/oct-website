@@ -309,15 +309,10 @@ footer a {
 .login-form {
     font-family: "Urbanist", sans-serif;
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
     align-items: center;
     justify-content: center;
-}
-
-@media (max-width:768px) {
-    .login-form {
-        flex-direction: column;
-    }
 }
 
 .input-field {
@@ -325,4 +320,14 @@ footer a {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+.input-field input {
+    padding: 0.2rem;
+    font-family: "Barlow", sans-serif;
+    font-size: 0.9rem;
+}
+
+.login-form .button {
+    margin-top: 0.75rem;
 }
