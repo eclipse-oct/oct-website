@@ -128,6 +128,14 @@ section {
     margin: 1rem 0 0 0;
 }
 
+.content-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
 .text-content {
     width: 80%;
     max-width: 850px;
@@ -276,4 +284,45 @@ footer a {
 
 .fg-black {
     color: #000000;
+}
+
+.button {
+    padding: 0.5rem 0.75rem;
+    font-family: "Barlow", sans-serif;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    font-weight: 500;
+    background-color: #643B88;
+    cursor: pointer;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    border-style: none;
+}
+
+.button img {
+    width: 1.75rem;
+    height: 1.75rem;
+    padding-right: 0.5rem;
+}
+
+.login-form {
+    font-family: "Urbanist", sans-serif;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width:768px) {
+    .login-form {
+        flex-direction: column;
+    }
+}
+
+.input-field {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
