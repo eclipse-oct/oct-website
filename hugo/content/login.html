@@ -1,0 +1,79 @@
+---
+title: "Open Collaboration Tools - Log In"
+description: "Log in to the public service of Open Collaboration Tools"
+layout: "login"
+type: oct
+---
+<div class="content">
+    <div class="content-center">
+        <div class="urbanist-regular">
+            <h1>Verified Login</h1>
+            <p>Show others who you are by logging in through a verified authentication provider.</p>
+        </div>
+        <a href="https://api.open-collab.tools/api/login/google" id="login-google">
+            <div class="button">
+                <img src="/assets/google-g.svg" alt="Google logo">
+                <span>Log in with Google</span>
+            </div>
+        </a>
+        <a href="https://api.open-collab.tools/api/login/github" id="login-github">
+            <div class="button">
+                <img src="/assets/github-mark.svg" alt="GitHub logo">
+                <span>Log in with GitHub</span>
+            </div>
+        </a>
+    </div>
+    <div classs="content-center">
+        <div class="urbanist-regular">
+            <h1>Unverified Login</h1>
+            <p>Enter a user name and email as you like – useful for evaluating and testing the service.</p>
+        </div>
+        <form class="login-form" onsubmit="login(event)">
+            <div class="input-field">
+                <label for="login-username">Username</label>
+                <input id="login-username" required>
+            </div>
+            <div class="input-field">
+                <label for="login-email">Email</label>
+                <input id="login-email" type="email" autocomplete="email">
+            </div>
+            <button type="submit" class="button">Log In</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const token = new URLSearchParams(location.search).get('token');
+    if (token) {
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginGoogle = document.getElementById('login-google');
+            loginGoogle.href += `?token=${token}`;
+            const loginGitHub = document.getElementById('login-github');
+            loginGitHub.href += `?token=${token}`;
+        });
+    }
+    function login(event) {
+        const user = document.getElementById('login-username').value;
+        const email = document.getElementById('login-email').value;
+        fetch('https://api.open-collab.tools/api/login/simple', {
+            method: 'POST',
+            body: JSON.stringify({ user, email, token }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(
+            (response) => {
+                if (response.ok) {
+                    location.href = '/login-success';
+                } else {
+                    response.text().then(
+                        (content) => alert(content || 'No details available'),
+                        () => alert(`Error ${response.status}: ${response.statusText || 'No details available'}`)
+                    );
+                }
+            },
+            (err) => alert(err && err.message ? err.message : err)
+        );
+        event.preventDefault();
+    }
+</script>
