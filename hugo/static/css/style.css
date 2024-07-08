@@ -145,12 +145,32 @@ section {
 }
 
 .text-content h1 {
-    font-size: 36px;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+
+.text-content h2 {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+}
+
+.text-content h3 {
+    font-size: 1.17rem;
+    line-height: 1.35rem;
 }
 
 .text-content code {
     padding: 0.2rem 0.4rem;
     background-color: #CBD3E7;
+}
+
+hr {
+    flex-grow: 1;
+    width: 100%;
+    height: 5px;
+    color: #643B88;
+    background-color: #643B88;
+    border: none;
 }
 
 .hero-text {
@@ -201,6 +221,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     padding: 1rem 0;
     width: 80%;
     max-width: 640px;
