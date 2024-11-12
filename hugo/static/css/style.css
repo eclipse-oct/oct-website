@@ -220,12 +220,21 @@ footer {
 
 .footer-content {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     align-items: center;
     gap: 1rem;
-    padding: 1rem 0;
+}
+
+.footer-copyright,
+.footer-content {
     width: 80%;
     max-width: 640px;
+    padding: 1rem 0;
+}
+
+.footer-copyright {
+    text-align: center;
 }
 
 footer a {
