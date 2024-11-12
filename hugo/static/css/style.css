@@ -1,3 +1,7 @@
+:root {
+    --violet: #643B88;
+    --primary: var(--violet);
+}
 html {
     height: 100%;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -26,7 +30,7 @@ header {
 }
 
 a {
-    color: #643B88;
+    color: var(--primary);
     text-decoration: none;
     cursor: pointer;
 }
@@ -95,7 +99,7 @@ section {
 
 .hero-section {
     padding-bottom: 50px;
-    border-bottom: solid 20px #643B88;
+    border-bottom: solid 20px var(--primary);
 }
 
 .content {
@@ -168,8 +172,8 @@ hr {
     flex-grow: 1;
     width: 100%;
     height: 5px;
-    color: #643B88;
-    background-color: #643B88;
+    color: var(--primary);
+    background-color: var(--primary);
     border: none;
 }
 
@@ -215,6 +219,7 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 1rem 0;
     color: #FFFFFF;
 }
 
@@ -230,7 +235,6 @@ footer {
 .footer-content {
     width: 80%;
     max-width: 640px;
-    padding: 1rem 0;
 }
 
 .footer-copyright {
@@ -298,7 +302,7 @@ footer a {
 }
 
 .bg-violet {
-    background-color: #643B88;
+    background-color: var(--violet);
 }
 
 .fg-indigo-dark {
@@ -323,7 +327,7 @@ footer a {
     color: #FFFFFF;
     font-size: 1.2rem;
     font-weight: 500;
-    background-color: #643B88;
+    background-color: var(--primary);
     cursor: pointer;
     border-radius: 0.75rem;
     display: flex;
@@ -386,5 +390,13 @@ footer a {
     display: flex;
     justify-content: center;
     gap: 2rem;
+}
+
+a.cc-btn.cc-allow,
+a.cc-btn.cc-allow:visited,
+a.cc-btn.cc-allow:active,
+a.cc-btn.cc-allow:hover {
+    background-color: var(--primary);
+    text-decoration: none;
 }
 
