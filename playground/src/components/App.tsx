@@ -1,4 +1,4 @@
-import { monacoCollab, MonacoCollabApi } from "oct-collaboration-monaco";
+import { monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
 import { User } from "open-collaboration-protocol";
 import { useEffect, useRef } from "react";
 

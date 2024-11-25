@@ -1,5 +1,5 @@
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
-import { monacoCollab } from "oct-collaboration-monaco";
+import { monacoCollab } from "open-collaboration-monaco";
 import { useCallback, useRef, useState } from "react";
 import * as monaco from "monaco-editor";
 import { MonacoEditorLanguageClientWrapper } from "monaco-editor-wrapper";
