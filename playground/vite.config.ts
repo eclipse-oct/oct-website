@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import tailwindcss from 'tailwindcss';
 import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import * as path from 'path';
-import * as fs from 'fs/promises';
 
 // https://vitejs.dev/config https://vitest.dev/config
 export default defineConfig({
@@ -14,22 +13,20 @@ export default defineConfig({
         }
     },
     build: {
-        target: 'esnext',
         rollupOptions: {
             input: {
                 index: path.resolve(__dirname, 'index.html')
             }
         },
         commonjsOptions: {
-            transformMixedEsModules: true
+            include: [
+                /cookie/,
+                /react/,
+                /lodash/,
+                /open-collaboration-protocol/,
+                /open-collaboration-yjs/
+            ],
         }
-    },
-    resolve: {
-        // // Explizite Behandlung von CommonJS-Modulen
-        // alias: {
-        //   // Pfad zum problematischen Modul
-        //   '../../open-collaboration-tools/packages/open-collaboration-monaco/lib/monaco-api.js': 'commonjs'
-        // }
     },
     optimizeDeps: {
         esbuildOptions: {
@@ -38,9 +35,8 @@ export default defineConfig({
             ]
         },
         include: [
-            'oct-collaboration-monaco',
             'open-collaboration-protocol',
-            'open-collabortaion-yjs'
+            'open-collaboration-yjs'
         ]
     }
 })

@@ -7,13 +7,14 @@
   "scripts": {
     "dev": "vite",
     "dev:debug": "vite --force --debug",
-    "build": "tsc && vite build",
+    "build": "tsc",
+    "production:build": "npm run build && vite build",
     "watch": "tsc --watch",
     "serve": "vite preview"
   },
   "dependencies": {
     "@typefox/monaco-editor-react": "6.0.0-next.9",
-    "oct-collaboration-monaco": "file:../../open-collaboration-tools/packages/open-collaboration-monaco",
+    "open-collaboration-monaco": "file:../../open-collaboration-tools/packages/open-collaboration-monaco",
     "open-collaboration-protocol": "file:../../open-collaboration-tools/packages/open-collaboration-protocol",
     "open-collaboration-yjs": "file:../../open-collaboration-tools/packages/open-collaboration-yjs",
     "react": "^18.3.1",
@@ -25,16 +26,18 @@
     "@types/node": "^20.16.5",
     "@types/react": "~18.3.5",
     "@types/react-dom": "~18.3.0",
-    "@vitejs/plugin-react-swc": "~3.7.0",
+    "@vitejs/plugin-react": "~4.3.3",
     "tailwindcss": "~3.4.11",
     "typescript": "~5.6.2",
-    "vite": "~5.4.4"
+    "vite": "~5.4.11"
   },
   "volta": {
     "node": "20.17.0",
     "npm": "10.8.3"
   },
   "overrides": {
-    "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@11.0.1"
+    "monaco-editor": {
+      "codingame/monaco-vscode-editor-api": "~11.1.1"
+    }
   }
 }
