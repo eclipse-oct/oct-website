@@ -13,7 +13,6 @@
   "author": "Typefox",
   "description": "",
   "workspaces": [
-    "hugo",
-    "playground"
+    "hugo"
   ]
 }
