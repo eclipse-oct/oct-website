@@ -3,17 +3,19 @@ import 'tailwindcss/tailwind.css'
 import { App } from './components/App.js'
 
 import './index.css'
-import { BrowserRouter, Route, Routes } from 'react-router'
-import { Login } from './components/Login.js'
+// import { createBrowserRouter, RouterProvider } from 'react-router'
+
+// const router = createBrowserRouter([
+//     {
+//         path: "/",
+//         element: <App /> 
+//     }
+// ]);
 
 const container = document.getElementById('root') as HTMLDivElement
 const root = createRoot(container)
 
 root.render(
-    <BrowserRouter>
-        <Routes>
-            <Route index element={<App />} />
-            <Route path='login' element={<Login />} />
-        </Routes>
-    </BrowserRouter>
+    // <RouterProvider router={router} />
+    <App />
 )

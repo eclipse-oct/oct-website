@@ -5,7 +5,12 @@ const colors = require('tailwindcss/colors')
 export default {
   content: ['./index.html', './src/**/*.{mjs,js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        barlow: 'Barlow',
+        urbanist: 'Urbanist'
+      }
+    },
     colors: {
       black: colors.black,
       white: colors.white,
