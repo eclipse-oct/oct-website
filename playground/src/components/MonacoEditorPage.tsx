@@ -1,6 +1,4 @@
 import { MonacoCollabApi } from "open-collaboration-monaco";
-import { useEffect, useState } from "react";
-import { Peer } from "open-collaboration-protocol";
 import { MonacoEditor } from "./MonacoEditor.js";
 import { RoomInfo } from "./RoomInfo.js";
 

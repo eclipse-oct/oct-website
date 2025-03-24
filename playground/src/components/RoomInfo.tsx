@@ -1,6 +1,6 @@
 import { useCopyToClipboard } from "../hooks/copyToClipboard.js";
 import { MonacoCollabApi, OtherUserData } from "open-collaboration-monaco";
-import { Peer } from "open-collaboration-protocol";
+import { Peer } from "open-collaboration-monaco";
 import { useEffect, useState } from "react";
 
 export type RoomInfoProps = {

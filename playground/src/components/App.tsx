@@ -1,5 +1,5 @@
 import { CollaborationInstance, monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
-import { User } from "open-collaboration-protocol";
+import { User } from "open-collaboration-monaco";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import { Login } from "./Login.js";
