@@ -1,4 +1,4 @@
-import { CollaborationInstance, monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
+import { AuthMetadata, CollaborationInstance, monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
 import { User } from "open-collaboration-monaco";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
@@ -17,7 +17,7 @@ export function App() {
   const [showJoinInput, setShowJoinInput] = useState(false);
   const [roomToken, setRoomToken] = useState<string | undefined>();
 
-  const loginPageOpener = (_url: string, token: string) => {
+  const loginPageOpener = (token: string, authenticationMetadata: AuthMetadata) => {
     setToken(token);
     setShowLogin(true);
   }
