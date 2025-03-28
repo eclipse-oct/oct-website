@@ -7,7 +7,9 @@
   "private": true,
   "scripts": {
     "clean": "shx rm -rf ./static/libs",
-    "build": "npm run clean && cross-env NODE_ENV=production  hugo        --config ./config.toml    -b /              -d ../public --gc --minify    ",
+    "build": "npm run clean && cross-env NODE_ENV=production npm run build:css -- --minify && cross-env NODE_ENV=production  hugo        --config ./config.toml    -b /              -d ../public --gc --minify    ",
+    "build:css": "tailwindcss -i ../tailwind/main.css -o ./static/css/styles.css",
+    "watch:css": "tailwindcss -i ../tailwind/main.css -o ./static/css/styles.css --watch",
     "watch": "npm run clean && cross-env NODE_ENV=development hugo server --config ./config.toml -D -b localhost:1313 -d ../public --appendPort=false",
     "watch:gitpod": "npm run clean && cross-env NODE_ENV=development hugo server --config ./config.toml -D -b `gp url 1313` -d ../public --appendPort=false"
   },

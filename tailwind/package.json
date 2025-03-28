@@ -1,0 +1,17 @@
+{
+    "name": "oct-website-tailwind",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "clean": "rn -rf ../hugo/static/css/tailwind.css",
+        "build": "tailwindcss -i ./main.css -o ../hugo/static/css/tailwind.css",
+        "watch": "tailwindcss -i ./main.css -o ../hugo/static/css/tailwind.css --watch"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "tailwindcss": "^3.4.1"
+    }
+}

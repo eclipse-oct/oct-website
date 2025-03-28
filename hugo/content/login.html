@@ -4,40 +4,40 @@ description: "Log in to the public service of Open Collaboration Tools"
 layout: "login"
 type: oct
 ---
-<div class="content">
-    <div class="content-center">
-        <div class="urbanist-regular">
-            <h1>Verified Login</h1>
-            <p>Show others who you are by logging in through a verified authentication provider.</p>
+<div class="flex flex-wrap justify-center gap-11 w-4/5 max-w-[1200px] mt-[75px]">
+    <div class="flex flex-col items-center gap-6 w-full">
+        <div class="font-urbanist">
+            <h1 class="text-2xl font-bold my-[0.83em]">Verified Login</h1>
+            <p class="leading-[normal] my-4">Show others who you are by logging in through a verified authentication provider.</p>
         </div>
         <a href="https://api.open-collab.tools/api/login/google" id="login-google">
-            <div class="button">
-                <img src="/assets/google-g.svg" alt="Google logo">
+            <div class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
+                <img src="/assets/google-g.svg" alt="Google logo" class="w-7 h-7 mr-2">
                 <span>Log in with Google</span>
             </div>
         </a>
         <a href="https://api.open-collab.tools/api/login/github" id="login-github">
-            <div class="button">
-                <img src="/assets/github-mark.svg" alt="GitHub logo">
+            <div class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
+                <img src="/assets/github-mark.svg" alt="GitHub logo" class="w-7 h-7 mr-2">
                 <span>Log in with GitHub</span>
             </div>
         </a>
     </div>
-    <div classs="content-center">
-        <div class="urbanist-regular">
-            <h1>Unverified Login</h1>
-            <p>Enter a user name and email as you like – useful for evaluating and testing the service.</p>
+    <div>
+        <div class="font-urbanist">
+            <h1 class="text-2xl font-bold my-[0.83em]">Unverified Login</h1>
+            <p class="leading-[normal] my-4">Enter a user name and email as you like – useful for evaluating and testing the service.</p>
         </div>
-        <form class="login-form" onsubmit="login(event)">
-            <div class="input-field">
+        <form class="flex flex-col gap-4 items-center justify-center font-urbanist" onsubmit="login(event)">
+            <div class="w-[200px] flex flex-col gap-1">
                 <label for="login-username">Username</label>
-                <input id="login-username" required>
+                <input id="login-username" required class="p-[0.2rem] font-barlow text-[0.9rem] border border-solid border-richBlack rounded-sm">
             </div>
-            <div class="input-field">
+            <div class="w-[200px] flex flex-col gap-1">
                 <label for="login-email">Email</label>
-                <input id="login-email" type="email" autocomplete="email">
+                <input id="login-email" type="email" autocomplete="email" class="p-[0.2rem] font-barlow text-[0.9rem] border border-solid border-richBlack rounded-sm">
             </div>
-            <button type="submit" class="button">Log In</button>
+            <button type="submit" class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">Log In</button>
         </form>
     </div>
 </div>
