@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="h-full font-sans text-base scroll-smooth">
 
 <head>
     {{ partial "oct-head" . }}
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen m-0 bg-brightGray">
     {{ partial "oct-header" . }}
-    <main>
-        <section style="height: 100%;">
-            <div class="text-content error-text">
-                <h1>Page Not Found</h1>
-                <h2>Couldn't find what you were looking for? Maybe we can help.</h1>
-                <div class="button-bar">
-                    <a class="button" href="https://www.typefox.io/">Get Support</a>
-                    <a class="button" href="/">Back to Homepage</a>
+    <main class="flex-grow flex-shrink-0 flex-basis-auto">
+        <section class="flex justify-center items-center w-full h-full">
+            <div class="w-4/5 max-w-[850px] mt-[100px] font-urbanist leading-[1.35rem] text-center">
+                <h1 class="text-[2.25rem] leading-[2.5rem] font-bold my-[0.83em]">Page Not Found</h1>
+                <h2 class="text-[1.5rem] leading-[1.75rem] font-bold my-[0.83em]">Couldn't find what you were looking for? Maybe we can help.</h2>
+                <div class="flex justify-center gap-8 md:flex-row flex-col">
+                    <a class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none leading-8" href="https://www.typefox.io/">Get Support</a>
+                    <a class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none leading-8" href="/">Back to Homepage</a>
                 </div>
             </div>
         </section>    
     </main>
     {{ partial "oct-footer" . }}
 </body>
-
 
 </html>

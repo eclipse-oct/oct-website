@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="h-full font-sans text-base scroll-smooth">
 
 <head>
     {{ partial "oct-head" . }}
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen m-0 bg-brightGray">
     {{ partial "oct-header" . }}
-    <main>
+    <main class="flex-grow flex-shrink-0 basis-auto">
         {{ block "main" . }}
         {{ end }}
     </main>

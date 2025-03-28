@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "main": "none",
   "scripts": {
-    "build": "npm run build --workspace hugo",
-    "watch": "npm run watch --workspace hugo"
+    "build": "npm run build --workspaces",
+    "watch": "npm run watch --workspaces"
   },
   "devDependencies": {
       "shx": "^0.3.4",
