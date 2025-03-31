@@ -13,6 +13,7 @@ export function RoomInfo(props: RoomInfoProps) {
     const [connectedUsers, setConnectedUsers] = useState<OtherUserData[]>([]);
     const [copiedText, copy] = useCopyToClipboard();
     const [followedUser, setFollowedUser] = useState<string | undefined>();
+    const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
 
     useEffect(() => {
         props.collabApi.getUserData().then(ud => {
@@ -48,6 +49,8 @@ export function RoomInfo(props: RoomInfoProps) {
         const textToCopy = props.roomToken;
         copy(textToCopy).then(success => {
             console.log(`Copied room token to clipboard: ${textToCopy}`);
+            setShowCopiedTooltip(true);
+            setTimeout(() => setShowCopiedTooltip(false), 2000);
         });
     };
 
@@ -55,8 +58,13 @@ export function RoomInfo(props: RoomInfoProps) {
         <div className="font-semibold">
             Room
         </div>
-        <div className="font-light text-sm cursor-pointer" onClick={handleCopyRoomToken}>
+        <div className="font-light text-sm cursor-pointer relative" onClick={handleCopyRoomToken}>
             {props.roomToken}
+            {showCopiedTooltip && (
+                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs">
+                    Copied
+                </div>
+            )}
         </div>
         <div className="font-semibold">
             Users

@@ -9,11 +9,11 @@ export type MonacoEditorPageProps = {
 
 export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
   return (
-    <div className="flex h-full w-full">
-      <div className="flex-1 overflow-auto">
+    <div className="flex grow">
+      <div className="flex-1 overflow-auto grow">
         <MonacoEditor collabApi={props.collabApi} />
       </div>
-      <div className="w-60 h-full bg-gray-800">
+      <div className="w-60 h-full bg-columbiaBlue p-4">
         <RoomInfo collabApi={props.collabApi} roomToken={props.roomToken} />
       </div>
     </div>
