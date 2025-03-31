@@ -1,28 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
 const colors = require('tailwindcss/colors')
+const baseConfig = require('../tailwind/base.tailwind.config')
 
 export default {
+  ...baseConfig,
   content: ['./index.html', './src/**/*.{mjs,js,ts,jsx,tsx}'],
-  theme: {
-    extend: {
-      fontFamily: {
-        barlow: 'Barlow',
-        urbanist: 'Urbanist'
-      }
-    },
-    colors: {
-      black: colors.black,
-      white: colors.white,
-      gray: {
-        50: '#f9fafb',
-        100: '#f4f5f7',
-        200: '#e5e7eb',
-        300: '#d2d6dc',
-        400: '#9fa6b2',
-        500: '#6b7280'
-      }
-    }
-  },
-  plugins: []
 }
