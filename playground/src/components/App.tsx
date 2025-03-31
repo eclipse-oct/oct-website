@@ -23,17 +23,17 @@ export function App() {
   }
 
   useEffect(() => {
-      const collabApi = monacoCollab({
-        serverUrl: SERVER_URL,
-        callbacks: {
-            onUserRequestsAccess: (user: User) => {
-                console.log('User requests access', user);
-                return Promise.resolve(true);
-            }
-        },
-        loginPageOpener
-      });
-      setCollabApi(collabApi);
+    const collabApi = monacoCollab({
+      serverUrl: SERVER_URL,
+      callbacks: {
+        onUserRequestsAccess: (user: User) => {
+          console.log('User requests access', user);
+          return Promise.resolve(true);
+        }
+      },
+      loginPageOpener
+    });
+    setCollabApi(collabApi);
   }, []);
 
   const handleLogin = useCallback((userName: string, email: string) => {
@@ -68,34 +68,34 @@ export function App() {
     }
   }, [roomToken]);
 
-  
+
   return (
-      <div className="flex justify-center items-center h-full font-urbanist">
-          {
-            showLogin && (
-              <div className="w-full h-full bg-white flex justify-center items-center">
-                  <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} />
-              </div>
-            )
-          }
-          {
-            showEditor && !!roomToken && !!collabApi && (
-              <div className="w-full h-full bg-white flex justify-center items-center">
-                  <MonacoEditorPage roomToken={roomToken} collabApi={collabApi} />
-              </div>
-            )
-          }
-          {
-            showJoinInput && (
-              <div className="absolute top-0 left-0 w-full h-full bg-white flex justify-center items-center">
-                  <RoomTokenInput onToken={handleJoinToken} />
-              </div>
-            )
-          }
-          {
-            !showLogin && !showEditor && 
-            (<StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />)
-          }
-      </div>
-  ); 
+    <div className="flex justify-center items-center h-full font-urbanist grow">
+      {
+        showLogin && (
+          <div className="w-full h-full bg-white flex justify-center items-center">
+            <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} />
+          </div>
+        )
+      }
+      {
+        showEditor && !!roomToken && !!collabApi && (
+          <div className="w-full bg-white flex grow min-h-[calc(100vh-110px-56px)] ">
+            <MonacoEditorPage roomToken={roomToken} collabApi={collabApi} />
+          </div>
+        )
+      }
+      {
+        showJoinInput && (
+          <div className="w-full h-full bg-white flex justify-center items-center grow">
+            <RoomTokenInput onToken={handleJoinToken} />
+          </div>
+        )
+      }
+      {
+        !showLogin && !showEditor && !showJoinInput &&
+        (<StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />)
+      }
+    </div>
+  );
 }

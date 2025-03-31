@@ -8,6 +8,8 @@
     "dev": "vite",
     "dev:debug": "vite --force --debug",
     "build": "tsc",
+    "build:css": "tailwindcss -i ./style.css -o ./src/style.css --minify",
+    "watch:css": "tailwindcss -i ./style.css -o ./src/style.css --watch",
     "production:build": "npm run build && vite build",
     "watch": "tsc --watch",
     "serve": "vite preview",
