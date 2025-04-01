@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "dev:debug": "vite --force --debug",
-    "build": "tsc",
+    "build": "npm run build:css && tsc",
     "build:css": "tailwindcss -i ./style.css -o ./src/style.css --minify",
     "watch:css": "tailwindcss -i ./style.css -o ./src/style.css --watch",
     "production:build": "npm run build && vite build",
