@@ -56,7 +56,7 @@ export function RoomInfo(props: RoomInfoProps) {
 
     return <>
         <div className="font-semibold">
-            Room
+            Room <span className="text-gray-400">(click to copy)</span>
         </div>
         <div className="font-light text-sm cursor-pointer relative" onClick={handleCopyRoomToken}>
             {props.roomToken}
