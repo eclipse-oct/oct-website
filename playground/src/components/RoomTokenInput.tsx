@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 
 export type RoomTokenInputProps = {
     onToken: (token: string) => void;
+    onBack: () => void;
 }
 
 export function RoomTokenInput(props: RoomTokenInputProps) {
@@ -17,16 +18,21 @@ export function RoomTokenInput(props: RoomTokenInputProps) {
     return (
         <div className="flex justify-center items-center h-full">
             <div className="flex flex-col space-y-4">
-                <input 
+                <input
                     value={token}
-                    type="text" placeholder="Room Token" 
+                    type="text" placeholder="Room Token"
                     className="border border-gray-300 rounded-md p-2"
-                    onChange={handleTokenChange} 
+                    onChange={handleTokenChange}
                 />
-                <button 
-                    className="bg-black hover:bg-gray-500 text-white font-bold py-2 px-4 rounded" 
+                <button
+                    className="bg-black hover:bg-gray-500 text-white font-bold py-2 px-4 rounded"
                     onClick={submitToken}>
                     Submit
+                </button>
+                <button
+                    className="bg-none hover:bg-gray-500 hover:text-white text-columbiaBlue font-bold py-2 px-4 rounded"
+                    onClick={props.onBack}>
+                    Back
                 </button>
             </div>
         </div>
