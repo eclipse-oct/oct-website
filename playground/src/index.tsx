@@ -2,8 +2,6 @@ import { createRoot } from 'react-dom/client'
 import 'tailwindcss/tailwind.css'
 import './style.css'
 import { App } from './components/App.js'
-
-import './index.css'
 // import { createBrowserRouter, RouterProvider } from 'react-router'
 
 // const router = createBrowserRouter([
@@ -21,7 +19,7 @@ root.render(
     <div className="flex flex-col min-h-screen">
         <header className="w-full flex justify-center sticky bg-richBlack">
             <div className="flex flex-wrap justify-between items-center max-w-[1300px] w-[85%]">
-                <a href="/#" className="no-underline">
+                <a href="https://www.open-collab.tools/" target="_blank" className="no-underline">
                     <div className="flex items-center">
                         <img src="/assets/logo.jpg" alt="Open Collaboration Tools Logo" className="w-[110px] h-[110px]" />
                         <h1 className="my-[0.67em] text-[32px] font-barlow text-columbiaBlue md:text-[32px] leading-[normal]">Open Collaboration Tools</h1>
@@ -42,9 +40,9 @@ root.render(
         <App />
         <footer className="w-full flex justify-center items-center text-white bg-eminence font-barlow font-light">
             <div className="flex justify-between items-center gap-4 w-4/5 max-w-[640px]">
-                <a href="/privacy" className="hover:underline">Privacy Policy</a>
+                <a href="https://www.open-collab.tools/privacy/" target='_blank' className="hover:underline">Privacy Policy</a>
                 <p className="my-[1em]"> • </p>
-                <a href="/tos" className="hover:underline">Terms of Use</a>
+                <a href="https://www.open-collab.tools/tos/" target='_blank' className="hover:underline">Terms of Use</a>
                 <p> • </p>
                 <div>
                     Copyright ©️ <a href="https://www.typefox.io/" target="_blank" className="hover:underline">TypeFox GmbH</a>

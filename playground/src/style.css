@@ -600,24 +600,16 @@ video {
   position: sticky;
 }
 
-.left-0 {
-  left: 0px;
-}
-
-.right-0 {
-  right: 0px;
-}
-
-.top-0 {
-  top: 0px;
-}
-
 .-top-8 {
   top: -2rem;
 }
 
 .left-1\/2 {
   left: 50%;
+}
+
+.right-0 {
+  right: 0px;
 }
 
 .my-\[0\.67em\] {
@@ -640,10 +632,6 @@ video {
 
 .mr-2 {
   margin-right: 0.5rem;
-}
-
-.mt-\[75px\] {
-  margin-top: 75px;
 }
 
 .flex {
@@ -675,24 +663,12 @@ video {
   height: 100%;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
-
-.min-h-full {
-  min-height: 100%;
-}
-
-.min-h-\[50vh\] {
-  min-height: 50vh;
-}
-
-.min-h-\[calc\(100vh-110px-88px\)\] {
-  min-height: calc(100vh - 110px - 88px);
-}
-
 .min-h-\[calc\(100vh-110px-56px\)\] {
   min-height: calc(100vh - 110px - 56px);
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-36 {
@@ -703,16 +679,16 @@ video {
   width: 1rem;
 }
 
+.w-4\/5 {
+  width: 80%;
+}
+
 .w-60 {
   width: 15rem;
 }
 
 .w-\[110px\] {
   width: 110px;
-}
-
-.w-\[140px\] {
-  width: 140px;
 }
 
 .w-\[43px\] {
@@ -725,10 +701,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-4\/5 {
-  width: 80%;
 }
 
 .max-w-\[1300px\] {
@@ -824,6 +796,16 @@ video {
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
 }
 
+.bg-columbiaBlue {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 211 231 / var(--tw-bg-opacity, 1));
+}
+
+.bg-eminence {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 59 136 / var(--tw-bg-opacity, 1));
+}
+
 .bg-gray-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
@@ -839,21 +821,6 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-eminence {
-  --tw-bg-opacity: 1;
-  background-color: rgb(100 59 136 / var(--tw-bg-opacity, 1));
-}
-
-.bg-red-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
-}
-
-.bg-columbiaBlue {
-  --tw-bg-opacity: 1;
-  background-color: rgb(203 211 231 / var(--tw-bg-opacity, 1));
-}
-
 .p-2 {
   padding: 0.5rem;
 }
@@ -862,29 +829,24 @@ video {
   padding: 1rem;
 }
 
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
 
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .font-barlow {
@@ -953,10 +915,6 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:text-\[40px\] {
-    font-size: 40px;
-  }
-
   .md\:text-\[32px\] {
     font-size: 32px;
   }
