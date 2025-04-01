@@ -62,6 +62,12 @@ export function App() {
     });
   }, [collabApi]);
 
+  const handleBack = useCallback(() => {
+    setShowJoinInput(false);
+    setShowLogin(false);
+    setShowEditor(false);
+  }, []);
+
   useEffect(() => {
     if (roomToken) {
       setShowEditor(true);
@@ -74,7 +80,7 @@ export function App() {
       {
         showLogin && (
           <div className="w-full h-full bg-white flex justify-center items-center">
-            <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} />
+            <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
           </div>
         )
       }
@@ -88,7 +94,7 @@ export function App() {
       {
         showJoinInput && (
           <div className="w-full h-full bg-white flex justify-center items-center grow">
-            <RoomTokenInput onToken={handleJoinToken} />
+            <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
           </div>
         )
       }
