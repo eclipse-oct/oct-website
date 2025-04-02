@@ -1,3 +1,9 @@
+// ******************************************************************************
+// Copyright 2025 TypeFox GmbH
+// This program and the accompanying materials are made available under the
+// terms of the MIT License, which is available in the project root.
+// ******************************************************************************
+
 import { MonacoCollabApi } from "open-collaboration-monaco";
 import { MonacoEditor } from "./MonacoEditor.js";
 import { RoomInfo } from "./RoomInfo.js";

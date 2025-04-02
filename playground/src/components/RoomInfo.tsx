@@ -1,3 +1,9 @@
+// ******************************************************************************
+// Copyright 2025 TypeFox GmbH
+// This program and the accompanying materials are made available under the
+// terms of the MIT License, which is available in the project root.
+// ******************************************************************************
+
 import { useCopyToClipboard } from "../hooks/copyToClipboard.js";
 import { MonacoCollabApi, OtherUserData } from "open-collaboration-monaco";
 import { Peer } from "open-collaboration-monaco";
