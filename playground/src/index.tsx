@@ -1,3 +1,9 @@
+// ******************************************************************************
+// Copyright 2025 TypeFox GmbH
+// This program and the accompanying materials are made available under the
+// terms of the MIT License, which is available in the project root.
+// ******************************************************************************
+
 import { createRoot } from 'react-dom/client'
 import 'tailwindcss/tailwind.css'
 import './style.css'
@@ -40,12 +46,15 @@ root.render(
         <App />
         <footer className="w-full flex justify-center items-center text-white bg-eminence font-barlow font-light">
             <div className="flex justify-between items-center gap-4 w-4/5 max-w-[640px]">
-                <a href="https://www.open-collab.tools/privacy/" target='_blank' className="hover:underline">Privacy Policy</a>
+                <a href="http://www.eclipse.org/legal/privacy.php" className="hover:underline">Privacy Policy</a>
                 <p className="my-[1em]"> • </p>
-                <a href="https://www.open-collab.tools/tos/" target='_blank' className="hover:underline">Terms of Use</a>
+                <a href="http://www.eclipse.org/legal/termsofuse.php" className="hover:underline">Terms of Use</a>
+                <p> • </p>
+                <a href="http://www.eclipse.org/legal/copyright.php" className="hover:underline">Copyright Agent</a>
                 <p> • </p>
                 <div>
-                    Copyright ©️ <a href="https://www.typefox.io/" target="_blank" className="hover:underline">TypeFox GmbH</a>
+                    &copy; 2025 by <a href="http://www.eclipse.org/" target="_blank" className="hover:underline">Eclipse
+                        Foundation</a>
                 </div>
             </div>
         </footer>
