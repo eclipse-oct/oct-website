@@ -46,13 +46,15 @@ root.render(
         <App />
         <footer className="w-full flex justify-center items-center text-white bg-eminence font-barlow font-light">
             <div className="flex justify-between items-center gap-4 w-4/5 max-w-[640px]">
-                <a href="http://www.eclipse.org/legal/privacy.php" className="hover:underline">Privacy Policy</a>
-                <p className="my-[1em]"> • </p>
-                <a href="http://www.eclipse.org/legal/termsofuse.php" className="hover:underline">Terms of Use</a>
-                <p> • </p>
-                <a href="http://www.eclipse.org/legal/copyright.php" className="hover:underline">Copyright Agent</a>
-                <p> • </p>
-                <div>
+                <a href="http://www.eclipse.org/legal/privacy.php" className="hover:underline text-center">Privacy Policy</a>
+                <p className="my-[1em] px-2"> • </p>
+                <a href="http://www.eclipse.org/legal/termsofuse.php" className="hover:underline text-center">Terms of Use</a>
+                <p className="px-2"> • </p>
+                <a href="http://www.eclipse.org/legal/copyright.php" className="hover:underline text-center">Copyright Agent</a>
+                <p className="px-2"> • </p>
+                <a href="http://www.eclipse.org/legal" className="hover:underline text-center">Legal</a>
+                <p className="px-2"> • </p>
+                <div className="text-center">
                     &copy; 2025 by <a href="http://www.eclipse.org/" target="_blank" className="hover:underline">Eclipse
                         Foundation</a>
                 </div>
