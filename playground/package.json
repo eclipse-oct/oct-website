@@ -7,38 +7,34 @@
   "scripts": {
     "dev": "vite",
     "dev:debug": "vite --force --debug",
-    "build": "npm run build:css && tsc",
+    "build": "npm run build:css && tsc --noEmit && esbuild --format=esm --bundle ./src/index.tsx --outdir=dist/assets && npm run copy-to-website",
     "build:css": "tailwindcss -i ./style.css -o ./src/style.css --minify",
     "watch:css": "tailwindcss -i ./style.css -o ./src/style.css --watch",
     "production:build": "npm run build && vite build",
+    "copy-to-website": "shx cp -r ./dist/assets/* ../public/playground",
     "watch": "tsc --watch",
     "serve": "vite preview",
     "install:links": "npm install --install-links"
   },
   "dependencies": {
-    "@typefox/monaco-editor-react": "6.0.0-next.9",
-    "open-collaboration-monaco": "file:../../open-collaboration-tools/packages/open-collaboration-monaco",
+    "@typefox/monaco-editor-react": "6.6.0",
+    "open-collaboration-monaco": "0.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.0.1"
   },
   "devDependencies": {
-    "@codingame/esbuild-import-meta-url-plugin": "~1.0.2",
+    "@codingame/esbuild-import-meta-url-plugin": "~1.0.3",
     "@types/node": "^20.16.5",
     "@types/react": "~18.3.5",
     "@types/react-dom": "~18.3.0",
     "@vitejs/plugin-react": "~4.3.3",
     "tailwindcss": "~3.4.11",
     "typescript": "~5.6.2",
-    "vite": "~5.4.11"
+    "vite": "6.3.5"
   },
   "volta": {
     "node": "20.17.0",
     "npm": "10.8.3"
-  },
-  "overrides": {
-    "open-collaboration-monaco": {
-      "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@~11.1.1"
-    }
   }
 }

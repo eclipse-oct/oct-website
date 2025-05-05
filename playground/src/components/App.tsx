@@ -4,16 +4,16 @@
 // terms of the MIT License, which is available in the project root.
 // ******************************************************************************
 
-import { AuthMetadata, CollaborationInstance, monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
+import { AuthMetadata, monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
 import { User } from "open-collaboration-monaco";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { Login } from "./Login.js";
 import { StartButtons } from "./StartButtons.js";
 import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
 
-const SERVER_URL = 'http://0.0.0.0:8100';
+const SERVER_URL = 'https://api.open-collab.tools';
 
 export function App() {
   const [collabApi, setCollabApi] = useState<MonacoCollabApi | null>(null);
@@ -23,9 +23,10 @@ export function App() {
   const [showJoinInput, setShowJoinInput] = useState(false);
   const [roomToken, setRoomToken] = useState<string | undefined>();
 
-  const loginPageOpener = (token: string, authenticationMetadata: AuthMetadata) => {
+  const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
     setToken(token);
     setShowLogin(true);
+    return true;
   }
 
   useEffect(() => {
@@ -85,21 +86,21 @@ export function App() {
     <div className="flex justify-center items-center h-full font-urbanist grow">
       {
         showLogin && (
-          <div className="w-full h-full bg-white flex justify-center items-center">
+          <div className="w-full h-full flex justify-center items-center">
             <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
           </div>
         )
       }
       {
         showEditor && !!roomToken && !!collabApi && (
-          <div className="w-full bg-white flex grow min-h-[calc(100vh-110px-56px)] ">
+          <div className="w-full flex grow min-h-[calc(100vh-110px-56px)] ">
             <MonacoEditorPage roomToken={roomToken} collabApi={collabApi} />
           </div>
         )
       }
       {
         showJoinInput && (
-          <div className="w-full h-full bg-white flex justify-center items-center grow">
+          <div className="w-full h-full flex justify-center items-center grow">
             <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
           </div>
         )
