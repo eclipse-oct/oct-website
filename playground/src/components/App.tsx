@@ -83,32 +83,32 @@ export function App() {
 
 
   return (
-    <div className="flex justify-center items-center h-full font-urbanist grow">
-      {
-        showLogin && (
-          <div className="w-full h-full flex justify-center items-center">
-            <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
-          </div>
-        )
-      }
-      {
-        showEditor && !!roomToken && !!collabApi && (
-          <div className="w-full flex grow min-h-[calc(100vh-110px-56px)] ">
-            <MonacoEditorPage roomToken={roomToken} collabApi={collabApi} />
-          </div>
-        )
-      }
-      {
-        showJoinInput && (
-          <div className="w-full h-full flex justify-center items-center grow">
-            <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
-          </div>
-        )
-      }
-      {
-        !showLogin && !showEditor && !showJoinInput &&
-        (<StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />)
-      }
-    </div>
+    showEditor && !!roomToken && !!collabApi ?
+      <div className="flex w-full grow">
+        <MonacoEditorPage roomToken={roomToken} collabApi={collabApi} />
+      </div>
+      :
+      <div className="flex items-center justify-center h-full font-urbanist grow">
+        {
+          showLogin && (
+            <div className="flex items-center justify-center w-full h-full">
+              <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
+            </div>
+          )
+        }
+        {
+          showJoinInput && (
+            <div className="flex items-center justify-center w-full h-full grow">
+              <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
+            </div>
+          )
+        }
+        {
+          !showLogin && !showEditor && !showJoinInput &&
+          (<StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />)
+        }
+      </div>
+
+
   );
 }
