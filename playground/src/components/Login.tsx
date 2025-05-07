@@ -62,6 +62,15 @@ export function Login(props: LoginProps) {
                         </label>
                 </div>
             <div className="flex flex-col space-y-4">
+                <OAuthButton icon="/assets/github-mark.svg" alt="GitHub logo" text="Log in with GitHub" 
+                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/github" />
+                <OAuthButton icon="/assets/google-g.svg" alt="Google logo" text="Log in with Google" 
+                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/google" />
+
+                <hr className="border-gray-300" />
+
+                <h2 className="text-2xl font-bold text-center">Unverified Login</h2>
+
                 <input
                     value={userName}
                     style={{opacity: termsAccepted ? 1 : 0.5}}
@@ -92,4 +101,23 @@ export function Login(props: LoginProps) {
             </div>
         </div>
     );
+}
+
+interface OAuthButtonProps {
+    icon: string;
+    alt: string;
+    text: string;
+    serverUrl: string;
+    endpoint: string;
+    token: string;
+}
+
+function OAuthButton({icon, text, alt, serverUrl, endpoint, token}: OAuthButtonProps) {
+    return <a href={`${serverUrl}${endpoint}?token=${token}&redirect=${window.location.href}`} 
+                id="login-github">
+        <div className="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
+            <img src={icon} alt={alt} className="w-7 h-7 mr-2"/>
+            <span>{text}</span>
+        </div>
+    </a>
 }

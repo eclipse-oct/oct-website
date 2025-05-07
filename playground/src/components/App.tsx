@@ -13,7 +13,7 @@ import { StartButtons } from "./StartButtons.js";
 import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
 
-const SERVER_URL = 'https://api.open-collab.tools';
+const SERVER_URL = 'http://localhost:8100';
 
 type pages = 'login' | 'editor' | 'startButtons' | 'joinInput' | 'loading';
 
@@ -31,25 +31,33 @@ export function App() {
   }
 
   useEffect(() => {
-    const collabApi = monacoCollab({
-      serverUrl: SERVER_URL,
-      callbacks: {
-        onUserRequestsAccess: (user: User) => {
-          console.log('User requests access', user);
-          return Promise.resolve(true);
-        }
-      },
-      loginPageOpener
+    checkAndGetAuthToken().then(authToken => {
+      const collabApi = monacoCollab({
+        serverUrl: SERVER_URL,
+        callbacks: {
+          onUserRequestsAccess: (user: User) => {
+            console.log('User requests access', user);
+            return Promise.resolve(true);
+          }
+        },
+        loginPageOpener,
+        userToken: authToken,
+      });
+      setCollabApi(collabApi);
     });
-    setCollabApi(collabApi);
   }, []);
 
   useEffect(() => {
     const setInitialPage = () => {
       if(collabApi) {
+        const task = getSavedTask()
         const search = new URLSearchParams(window.location.search)
         if(search.has('room')) {
           handleJoinToken(search.get('room')!);
+        } else if(task === 'create') {
+            handleCreateRoom();
+        } else if(typeof task === 'string') {
+            handleJoinToken(task);
         } else {
           // TODO fire leave room event if connected
           setPage('startButtons');
@@ -81,7 +89,9 @@ export function App() {
   const handleCreateRoom = useCallback(() => {
     setError(undefined);
     setPage('loading');
+    setTask('create');
     collabApi && collabApi.createRoom().then(roomToken => {
+      setTask()
       if(roomToken) {
         console.log('Room created');
         setRoomToken(roomToken);
@@ -99,17 +109,19 @@ export function App() {
 
   const handleJoinToken = useCallback((token: string) => {
     setPage('loading');
-      collabApi && collabApi.joinRoom(token).then(res => {
-        if (res) {
-          console.log('Joined room');
-          setRoomToken(token);
-          setPage('editor');
-        } else {
-          history.pushState({}, '', location.pathname);
-          setError('Error joining room, please check the token');
-          setPage('startButtons');
-        }
-      })
+    setTask(token);
+    collabApi && collabApi.joinRoom(token).then(res => {
+      setTask()
+      if (res) {
+        console.log('Joined room');
+        setRoomToken(token);
+        setPage('editor');
+      } else {
+        history.pushState({}, '', location.pathname);
+        setError('Error joining room, please check the token');
+        setPage('startButtons');
+      }
+    })
   }, [collabApi]);
 
   const handleBack = useCallback(() => {
@@ -158,4 +170,34 @@ export function Spinner() {
     <div className="flex justify-center items-center h-full">
         <div className="animate-spin rounded-full h-[64px] w-[64px] border-4 border-b-transparent border-eminence border-solid"></div>
     </div>  );
+}
+async function checkAndGetAuthToken(): Promise<string | undefined> {
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (token) {
+    window.history.replaceState({}, '', window.location.pathname);
+    const res = await fetch(SERVER_URL + `/api/login/poll/${token}`, {
+      method: 'POST',
+    })
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.loginToken) {
+        return data.loginToken;
+      }
+    } else {
+      console.error('Failed to get auth token', res.statusText);
+    }
+  }
+  return undefined;
+}
+
+function getSavedTask(): string | undefined {
+  const task = localStorage.getItem('task');
+  if (task) {
+    return task;
+  }
+  return undefined;
+}
+
+function setTask(task?: string) {
+  task ? localStorage.setItem('task', task) : localStorage.removeItem('task');
 }
