@@ -13,7 +13,7 @@ import { StartButtons } from "./StartButtons.js";
 import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
 
-const SERVER_URL = 'https://api.open-collab.tools';
+const SERVER_URL = 'http://localhost:8100';
 
 export function App() {
   const [collabApi, setCollabApi] = useState<MonacoCollabApi | null>(null);
@@ -30,18 +30,32 @@ export function App() {
   }
 
   useEffect(() => {
-    const collabApi = monacoCollab({
-      serverUrl: SERVER_URL,
-      callbacks: {
-        onUserRequestsAccess: (user: User) => {
-          console.log('User requests access', user);
-          return Promise.resolve(true);
-        }
-      },
-      loginPageOpener
+    checkAndGetAuthToken().then(authToken => {
+      const collabApi = monacoCollab({
+        serverUrl: SERVER_URL,
+        callbacks: {
+          onUserRequestsAccess: (user: User) => {
+            console.log('User requests access', user);
+            return Promise.resolve(true);
+          }
+        },
+        loginPageOpener,
+        userToken: authToken,
+      });
+      setCollabApi(collabApi);
     });
-    setCollabApi(collabApi);
   }, []);
+
+  useEffect(() => {
+    if (collabApi) {
+      const task = getSavedTask()
+      if(task === 'create') {
+        handleCreateRoom();
+      } else if(typeof task === 'string') {
+        handleJoinToken(task);
+      }
+    }
+  }, [collabApi])
 
   const handleLogin = useCallback((userName: string, email: string) => {
     console.log('Logged in', userName, email);
@@ -49,8 +63,10 @@ export function App() {
   }, []);
 
   const handleCreateRoom = useCallback(() => {
+    setTask('create');
     collabApi && collabApi.createRoom().then(roomToken => {
       console.log('Room created');
+      setTask()
       setRoomToken(roomToken);
     });
   }, [collabApi]);
@@ -60,10 +76,12 @@ export function App() {
   }, []);
 
   const handleJoinToken = useCallback((token: string) => {
+    setTask(token);
     setShowJoinInput(false);
     collabApi && collabApi.joinRoom(token).then(res => {
       if (res) {
         console.log('Joined room');
+        setTask()
         setRoomToken(token);
       }
     });
@@ -111,4 +129,35 @@ export function App() {
       }
     </div>
   );
+}
+
+async function checkAndGetAuthToken(): Promise<string | undefined> {
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (token) {
+    window.history.replaceState({}, '', window.location.pathname);
+    const res = await fetch(SERVER_URL + `/api/login/poll/${token}`, {
+      method: 'POST',
+    })
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.loginToken) {
+        return data.loginToken;
+      }
+    } else {
+      console.error('Failed to get auth token', res.statusText);
+    }
+  }
+  return undefined;
+}
+
+function getSavedTask(): string | undefined {
+  const task = localStorage.getItem('task');
+  if (task) {
+    return task;
+  }
+  return undefined;
+}
+
+function setTask(task?: string) {
+  task ? localStorage.setItem('task', task) : localStorage.removeItem('task');
 }
