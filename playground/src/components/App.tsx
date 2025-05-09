@@ -15,17 +15,17 @@ import { MonacoEditorPage } from "./MonacoEditorPage.js";
 
 const SERVER_URL = 'https://api.open-collab.tools';
 
+type pages = 'login' | 'editor' | 'startButtons' | 'joinInput' | 'loading';
+
 export function App() {
   const [collabApi, setCollabApi] = useState<MonacoCollabApi | null>(null);
-  const [showLogin, setShowLogin] = useState(false);
-  const [showEditor, setShowEditor] = useState(false);
+  const [page, setPage] = useState<pages>('startButtons');
   const [token, setToken] = useState('');
-  const [showJoinInput, setShowJoinInput] = useState(false);
   const [roomToken, setRoomToken] = useState<string | undefined>();
 
   const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
     setToken(token);
-    setShowLogin(true);
+    setPage('login');
     return true;
   }
 
@@ -44,11 +44,12 @@ export function App() {
   }, []);
 
   const handleLogin = useCallback((userName: string, email: string) => {
+    setPage('loading');
     console.log('Logged in', userName, email);
-    setShowLogin(false);
   }, []);
 
   const handleCreateRoom = useCallback(() => {
+    setPage('loading');
     collabApi && collabApi.createRoom().then(roomToken => {
       console.log('Room created');
       setRoomToken(roomToken);
@@ -56,59 +57,62 @@ export function App() {
   }, [collabApi]);
 
   const handleJoinRoom = useCallback(() => {
-    setShowJoinInput(true);
+    setPage('joinInput');
   }, []);
 
   const handleJoinToken = useCallback((token: string) => {
-    setShowJoinInput(false);
+    setPage('loading');
     collabApi && collabApi.joinRoom(token).then(res => {
       if (res) {
         console.log('Joined room');
         setRoomToken(token);
+        setPage('editor');
       }
     });
   }, [collabApi]);
 
   const handleBack = useCallback(() => {
-    setShowJoinInput(false);
-    setShowLogin(false);
-    setShowEditor(false);
+    setPage('startButtons');
   }, []);
 
   useEffect(() => {
     if (roomToken) {
-      setShowEditor(true);
+      setPage('editor')
     }
   }, [roomToken]);
+
+  const renderCurrentPage = () => {
+    switch (page) {
+      case 'loading':
+        return <Spinner />;
+      case 'login':
+        return <div className="w-full h-full flex justify-center items-center">
+          <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
+        </div>
+      case 'editor':
+        return <div className="w-full flex grow min-h-[calc(100vh-110px-56px)] ">
+          <MonacoEditorPage roomToken={roomToken!} collabApi={collabApi!} />
+        </div>;
+      case 'joinInput':
+        return <div className="w-full h-full flex justify-center items-center grow">
+        <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
+      </div>;
+      default:
+        return <StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />;
+    }
+  }
 
 
   return (
     <div className="flex justify-center items-center h-full font-urbanist grow">
-      {
-        showLogin && (
-          <div className="w-full h-full flex justify-center items-center">
-            <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
-          </div>
-        )
-      }
-      {
-        showEditor && !!roomToken && !!collabApi && (
-          <div className="w-full flex grow min-h-[calc(100vh-110px-56px)] ">
-            <MonacoEditorPage roomToken={roomToken} collabApi={collabApi} />
-          </div>
-        )
-      }
-      {
-        showJoinInput && (
-          <div className="w-full h-full flex justify-center items-center grow">
-            <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
-          </div>
-        )
-      }
-      {
-        !showLogin && !showEditor && !showJoinInput &&
-        (<StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />)
-      }
+      {renderCurrentPage()}
     </div>
   );
+}
+
+export function Spinner() {
+  return (
+    <div className="flex justify-center items-center h-full">
+        <div className="animate-spin rounded-full h-[64px] w-[64px] border-4 border-b-transparent border-eminence border-solid"></div>
+    </div>  );
 }
