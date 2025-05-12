@@ -22,6 +22,7 @@ export function App() {
   const [page, setPage] = useState<pages>('startButtons');
   const [token, setToken] = useState('');
   const [roomToken, setRoomToken] = useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>();
 
   const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
     setToken(token);
@@ -49,26 +50,36 @@ export function App() {
   }, []);
 
   const handleCreateRoom = useCallback(() => {
+    setError(undefined);
     setPage('loading');
     collabApi && collabApi.createRoom().then(roomToken => {
-      console.log('Room created');
-      setRoomToken(roomToken);
+      if(roomToken) {
+        console.log('Room created');
+        setRoomToken(roomToken);
+      } else {
+        setError('Error creating room');
+        setPage('startButtons');
+      }
     });
   }, [collabApi]);
 
   const handleJoinRoom = useCallback(() => {
+    setError(undefined);
     setPage('joinInput');
   }, []);
 
   const handleJoinToken = useCallback((token: string) => {
     setPage('loading');
-    collabApi && collabApi.joinRoom(token).then(res => {
-      if (res) {
-        console.log('Joined room');
-        setRoomToken(token);
-        setPage('editor');
-      }
-    });
+      collabApi && collabApi.joinRoom(token).then(res => {
+        if (res) {
+          console.log('Joined room');
+          setRoomToken(token);
+          setPage('editor');
+        } else {
+          setError('Error joining room, please check the token');
+          setPage('startButtons');
+        }
+      })
   }, [collabApi]);
 
   const handleBack = useCallback(() => {
@@ -104,8 +115,9 @@ export function App() {
 
 
   return (
-    <div className="flex justify-center items-center h-full font-urbanist grow">
+    <div className="flex flex-col justify-center items-center h-full font-urbanist grow">
       {renderCurrentPage()}
+      {error && <div className="text-center p-4 text-red-500">{error}</div>}
     </div>
   );
 }
