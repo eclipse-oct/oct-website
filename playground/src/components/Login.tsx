@@ -47,8 +47,8 @@ export function Login(props: LoginProps) {
 
 
     return (
-        <div className="flex-col justify-center items-center h-full">
-            <div className="flex gap-4 mb-4 align-center">
+        <div className="flex flex-col justify-center items-center h-full">
+            <div className="flex gap-2 mb-4 items-center">
                     <input
                         type="checkbox"
                         checked={termsAccepted}
