@@ -19,7 +19,7 @@ type: oct
                     </label>
             </div>
         </div>
-        <div class="collapse login-section flex flex-col gap-6 mb-[44px]">
+        <div class="login-section opacity-50 pointer-events-none">
             <div class="font-urbanist">
                 <h1 class="text-2xl font-bold my-[0.83em]">Verified Login</h1>
                 <p class="leading-[normal] my-4">Show others who you are by logging in through a verified authentication provider.</p>
@@ -39,7 +39,7 @@ type: oct
                 </a>
             </div>
         </div>
-        <div class="collapse login-section">
+        <div class="login-section opacity-50 pointer-events-none">
             <div class="font-urbanist">
                 <h1 class="text-2xl font-bold my-[0.83em]">Unverified Login</h1>
                 <p class="leading-[normal] my-4">Enter a user name and email as you like – useful for evaluating and testing the service.</p>
@@ -98,7 +98,8 @@ type: oct
         termsConditionsCheckbox.addEventListener('change', (e) => {
             loginSections = document.querySelectorAll('.login-section');
             loginSections.forEach((section) => {
-                section.style.visibility = termsConditionsCheckbox.checked ? 'visible' : 'collapse';
+                section.style.opacity = termsConditionsCheckbox.checked ? 1 : 0.5;
+                section.style.pointerEvents = termsConditionsCheckbox.checked ? 'auto' : 'none';
             });
         })
         

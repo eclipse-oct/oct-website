@@ -61,29 +61,35 @@ export function Login(props: LoginProps) {
                         <a href="https://www.eclipse.org/org/documents/Community_Code_of_Conduct.php" className="hover:underline text-eminence">Code of Conduct</a>.
                         </label>
                 </div>
-            { termsAccepted && <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4">
                 <input
                     value={userName}
+                    style={{opacity: termsAccepted ? 1 : 0.5}}
                     type="text" placeholder="Username (required)"
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleUserNameChange}
+                    disabled={!termsAccepted}
                 />
                 <input
                     type="email" placeholder="Email"
+                    style={{opacity: termsAccepted ? 1 : 0.5}}
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleEmailChange}
+                    disabled={!termsAccepted}
                 />
                 <button
                     className="bg-black enabled:hover:bg-gray-500 text-white font-bold py-2 px-4 rounded disabled:opacity-30"
+                    style={{opacity: termsAccepted ? 1 : 0.5}}
                     onClick={login} disabled={!userName}>
                     Login
                 </button>
                 <button
-                    className="bg-none hover:bg-gray-500 hover:text-white text-columbiaBlue font-bold py-2 px-4 rounded"
+                    className="bg-none hover:bg-gray-500 hover:text-white font-bold py-2 px-4 rounded"
+                    style={{opacity: 1}}
                     onClick={props.onBack}>
                     Back
                 </button>
-            </div>}
+            </div>
         </div>
     );
 }
