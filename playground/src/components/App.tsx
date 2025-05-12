@@ -57,7 +57,7 @@ export function App() {
         console.log('Room created');
         setRoomToken(roomToken);
       } else {
-        setError('Error creating room, please try again');
+        setError('Error creating room');
         setPage('startButtons');
       }
     });
