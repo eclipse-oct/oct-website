@@ -48,7 +48,7 @@ export function Login(props: LoginProps) {
             <div className="flex flex-col space-y-4">
                 <input
                     value={userName}
-                    type="text" placeholder="Username"
+                    type="text" placeholder="Username (required)"
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleUserNameChange}
                 />
@@ -58,8 +58,8 @@ export function Login(props: LoginProps) {
                     onChange={handleEmailChange}
                 />
                 <button
-                    className="bg-black hover:bg-gray-500 text-white font-bold py-2 px-4 rounded"
-                    onClick={login}>
+                    className="bg-black enabled:hover:bg-gray-500 text-white font-bold py-2 px-4 rounded disabled:opacity-30"
+                    onClick={login} disabled={!userName}>
                     Login
                 </button>
                 <button
