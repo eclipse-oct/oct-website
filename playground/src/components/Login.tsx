@@ -57,7 +57,7 @@ export function Login(props: LoginProps) {
                     <label className="mt-0">I accept the Eclipse{' '}
                         <a href="http://www.eclipse.org/legal/privacy.php" className="hover:underline text-eminence">Privacy Policy</a>,{' '}
                         <a href="http://www.eclipse.org/legal/termsofuse.php" className="hover:underline text-eminence">Terms of Use</a>
-                        {' '}an{' '}
+                        {' '}and{' '}
                         <a href="https://www.eclipse.org/org/documents/Community_Code_of_Conduct.php" className="hover:underline text-eminence">Code of Conduct</a>.
                         </label>
                 </div>
