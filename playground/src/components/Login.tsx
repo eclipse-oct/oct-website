@@ -14,6 +14,7 @@ export type LoginProps = {
 }
 
 export function Login(props: LoginProps) {
+    const [termsAccepted, setTermsAccepted] = useState(false);
     const [userName, setUserName] = useState('');
     const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -43,9 +44,24 @@ export function Login(props: LoginProps) {
         }
     }, [props.token, props.serverUrl, props.onLogin, userName, email]);
 
+
+
     return (
-        <div className="flex justify-center items-center h-full">
-            <div className="flex flex-col space-y-4">
+        <div className="flex-col justify-center items-center h-full">
+            <div className="flex gap-4 mb-4 align-center">
+                    <input
+                        type="checkbox"
+                        checked={termsAccepted}
+                        onChange={() => setTermsAccepted(!termsAccepted)}
+                    />
+                    <label className="mt-0">I accept the Eclipse
+                        <a href="http://www.eclipse.org/legal/privacy.php" className="hover:underline text-center"> Privacy Policy</a>,
+                        <a href="http://www.eclipse.org/legal/termsofuse.php" className="hover:underline text-center"> Terms of Use </a>
+                        and
+                        <a href="https://www.eclipse.org/org/documents/Community_Code_of_Conduct.php" className="hover:underline text-center"> Code of Conduct</a>.
+                        </label>
+                </div>
+            { termsAccepted && <div className="flex flex-col space-y-4">
                 <input
                     value={userName}
                     type="text" placeholder="Username (required)"
@@ -67,7 +83,7 @@ export function Login(props: LoginProps) {
                     onClick={props.onBack}>
                     Back
                 </button>
-            </div>
+            </div>}
         </div>
     );
 }

@@ -7,6 +7,20 @@ type: oct
 <div class="flex flex-wrap justify-center gap-11 w-4/5 max-w-[1200px] mt-[75px]">
     <div class="flex flex-col items-center gap-6 w-full">
         <div class="font-urbanist">
+            <h1 class="text-2xl font-bold my-[0.83em]">Terms And Conditions</h1>
+            <div className="flex gap-4 mb-4 align-center">
+                    <input id="terms-conditions-checkbox" type="checkbox"/>
+                    <label className="mt-0">I accept the Eclipse
+                        <a href="http://www.eclipse.org/legal/privacy.php" className="hover:underline text-center"> Privacy Policy</a>,
+                        <a href="http://www.eclipse.org/legal/termsofuse.php" className="hover:underline text-center"> Terms of Use </a>
+                        and
+                        <a href="https://www.eclipse.org/org/documents/Community_Code_of_Conduct.php" className="hover:underline text-center"> Code of Conduct</a>.
+                        </label>
+                </div>
+        </div>
+    </div>
+    <div class="collapse login-section flex flex-col items-center gap-6 w-full">
+        <div class="font-urbanist">
             <h1 class="text-2xl font-bold my-[0.83em]">Verified Login</h1>
             <p class="leading-[normal] my-4">Show others who you are by logging in through a verified authentication provider.</p>
         </div>
@@ -23,7 +37,7 @@ type: oct
             </div>
         </a>
     </div>
-    <div>
+    <div class="collapse login-section">
         <div class="font-urbanist">
             <h1 class="text-2xl font-bold my-[0.83em]">Unverified Login</h1>
             <p class="leading-[normal] my-4">Enter a user name and email as you like – useful for evaluating and testing the service.</p>
@@ -76,4 +90,15 @@ type: oct
         );
         event.preventDefault();
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const termsConditionsCheckbox = document.getElementById('terms-conditions-checkbox');
+        termsConditionsCheckbox.addEventListener('change', (e) => {
+            loginSections = document.querySelectorAll('.login-section');
+            loginSections.forEach((section) => {
+                section.style.visibility = termsConditionsCheckbox.checked ? 'visible' : 'hidden';
+            });
+        })
+        
+    });
 </script>
