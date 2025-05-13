@@ -4,44 +4,60 @@ description: "Log in to the public service of Open Collaboration Tools"
 layout: "login"
 type: oct
 ---
-<div class="flex flex-wrap justify-center gap-11 w-4/5 max-w-[1200px] mt-[75px]">
-    <div class="flex flex-col items-center gap-6 w-full">
-        <div class="font-urbanist">
-            <h1 class="text-2xl font-bold my-[0.83em]">Verified Login</h1>
-            <p class="leading-[normal] my-4">Show others who you are by logging in through a verified authentication provider.</p>
+<div class="flex justify-center">
+    <div class="mx-16 mt-[44px]">
+        <div class="flex flex-col gap-6 w-full mb-[44px]">
+            <div class="font-urbanist">
+                <h1 class="text-2xl font-bold my-[0.83em]">Terms And Conditions</h1>
+                <p class="leading-[normal] my-4">Please accept the terms and conditions to log in to this service</p>
+                <input id="terms-conditions-checkbox" type="checkbox"/>
+                <label class="mt-0">I accept the Eclipse
+                    <a href="http://www.eclipse.org/legal/privacy.php" class="text-eminence hover:underline"> Privacy Policy</a>,
+                    <a href="http://www.eclipse.org/legal/termsofuse.php" class="text-eminence hover:underline"> Terms of Use </a>
+                    and
+                    <a href="https://www.eclipse.org/org/documents/Community_Code_of_Conduct.php" class="text-eminence hover:underline"> Code of Conduct</a>.
+                    </label>
+            </div>
         </div>
-        <a href="https://api.open-collab.tools/api/login/google" id="login-google">
-            <div class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
-                <img src="/assets/google-g.svg" alt="Google logo" class="w-7 h-7 mr-2">
-                <span>Log in with Google</span>
+        <div class="login-section opacity-50 pointer-events-none">
+            <div class="font-urbanist">
+                <h1 class="text-2xl font-bold my-[0.83em]">Verified Login</h1>
+                <p class="leading-[normal] my-4">Show others who you are by logging in through a verified authentication provider.</p>
             </div>
-        </a>
-        <a href="https://api.open-collab.tools/api/login/github" id="login-github">
-            <div class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
-                <img src="/assets/github-mark.svg" alt="GitHub logo" class="w-7 h-7 mr-2">
-                <span>Log in with GitHub</span>
+            <div class="flex flex-col gap-4 items-center justify-center font-urbanist">
+                <a href="https://api.open-collab.tools/api/login/google" id="login-google">
+                    <div class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
+                        <img src="/assets/google-g.svg" alt="Google logo" class="w-7 h-7 mr-2">
+                        <span>Log in with Google</span>
+                    </div>
+                </a>
+                <a href="https://api.open-collab.tools/api/login/github" id="login-github">
+                    <div class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
+                        <img src="/assets/github-mark.svg" alt="GitHub logo" class="w-7 h-7 mr-2">
+                        <span>Log in with GitHub</span>
+                    </div>
+                </a>
             </div>
-        </a>
-    </div>
-    <div>
-        <div class="font-urbanist">
-            <h1 class="text-2xl font-bold my-[0.83em]">Unverified Login</h1>
-            <p class="leading-[normal] my-4">Enter a user name and email as you like – useful for evaluating and testing the service.</p>
         </div>
-        <form class="flex flex-col gap-4 items-center justify-center font-urbanist" onsubmit="login(event)">
-            <div class="w-[200px] flex flex-col gap-1">
-                <label for="login-username">Username</label>
-                <input id="login-username" required class="p-[0.2rem] font-barlow text-[0.9rem] border border-solid border-richBlack rounded-sm">
+        <div class="login-section opacity-50 pointer-events-none">
+            <div class="font-urbanist">
+                <h1 class="text-2xl font-bold my-[0.83em]">Unverified Login</h1>
+                <p class="leading-[normal] my-4">Enter a user name and email as you like – useful for evaluating and testing the service.</p>
             </div>
-            <div class="w-[200px] flex flex-col gap-1">
-                <label for="login-email">Email</label>
-                <input id="login-email" type="email" autocomplete="email" class="p-[0.2rem] font-barlow text-[0.9rem] border border-solid border-richBlack rounded-sm">
-            </div>
-            <button type="submit" class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">Log In</button>
-        </form>
+            <form class="flex flex-col gap-4 items-center justify-center font-urbanist" onsubmit="login(event)">
+                <div class="w-[200px] flex flex-col gap-1">
+                    <label for="login-username">Username</label>
+                    <input id="login-username" required class="p-[0.2rem] font-barlow text-[0.9rem] border border-solid border-richBlack rounded-sm">
+                </div>
+                <div class="w-[200px] flex flex-col gap-1">
+                    <label for="login-email">Email</label>
+                    <input id="login-email" type="email" autocomplete="email" class="p-[0.2rem] font-barlow text-[0.9rem] border border-solid border-richBlack rounded-sm">
+                </div>
+                <button type="submit" class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">Log In</button>
+            </form>
+        </div>
     </div>
 </div>
-
 <script>
     const token = new URLSearchParams(location.search).get('token');
     if (token) {
@@ -76,4 +92,16 @@ type: oct
         );
         event.preventDefault();
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const termsConditionsCheckbox = document.getElementById('terms-conditions-checkbox');
+        termsConditionsCheckbox.addEventListener('change', (e) => {
+            loginSections = document.querySelectorAll('.login-section');
+            loginSections.forEach((section) => {
+                section.style.opacity = termsConditionsCheckbox.checked ? 1 : 0.5;
+                section.style.pointerEvents = termsConditionsCheckbox.checked ? 'auto' : 'none';
+            });
+        })
+        
+    });
 </script>

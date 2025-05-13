@@ -14,6 +14,7 @@ export type LoginProps = {
 }
 
 export function Login(props: LoginProps) {
+    const [termsAccepted, setTermsAccepted] = useState(false);
     const [userName, setUserName] = useState('');
     const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -43,27 +44,48 @@ export function Login(props: LoginProps) {
         }
     }, [props.token, props.serverUrl, props.onLogin, userName, email]);
 
+
+
     return (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex flex-col justify-center items-center h-full">
+            <div className="flex gap-2 mb-4 items-center">
+                    <input
+                        type="checkbox"
+                        checked={termsAccepted}
+                        onChange={() => setTermsAccepted(!termsAccepted)}
+                    />
+                    <label className="mt-0">I accept the Eclipse{' '}
+                        <a href="http://www.eclipse.org/legal/privacy.php" className="hover:underline text-eminence">Privacy Policy</a>,{' '}
+                        <a href="http://www.eclipse.org/legal/termsofuse.php" className="hover:underline text-eminence">Terms of Use</a>
+                        {' '}and{' '}
+                        <a href="https://www.eclipse.org/org/documents/Community_Code_of_Conduct.php" className="hover:underline text-eminence">Code of Conduct</a>.
+                        </label>
+                </div>
             <div className="flex flex-col space-y-4">
                 <input
                     value={userName}
+                    style={{opacity: termsAccepted ? 1 : 0.5}}
                     type="text" placeholder="Username (required)"
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleUserNameChange}
+                    disabled={!termsAccepted}
                 />
                 <input
                     type="email" placeholder="Email"
+                    style={{opacity: termsAccepted ? 1 : 0.5}}
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleEmailChange}
+                    disabled={!termsAccepted}
                 />
                 <button
                     className="bg-black enabled:hover:bg-gray-500 text-white font-bold py-2 px-4 rounded disabled:opacity-30"
+                    style={{opacity: (termsAccepted && userName) ? 1 : 0.5}}
                     onClick={login} disabled={!userName}>
                     Login
                 </button>
                 <button
-                    className="bg-none hover:bg-gray-500 hover:text-white text-columbiaBlue font-bold py-2 px-4 rounded"
+                    className="bg-none hover:bg-gray-500 hover:text-white font-bold py-2 px-4 rounded"
+                    style={{opacity: 1}}
                     onClick={props.onBack}>
                     Back
                 </button>
