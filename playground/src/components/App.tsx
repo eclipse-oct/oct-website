@@ -44,6 +44,35 @@ export function App() {
     setCollabApi(collabApi);
   }, []);
 
+  useEffect(() => {
+    const setInitialPage = () => {
+      if(collabApi) {
+        const search = new URLSearchParams(window.location.search)
+        if(search.has('room')) {
+          handleJoinToken(search.get('room')!);
+        } else {
+          // TODO fire leave room event if connected
+          setPage('startButtons');
+        }
+      }
+  }
+  setInitialPage();
+  window.addEventListener('popstate', (event) => {
+    setInitialPage();
+  });
+  }, [collabApi]);
+
+
+  // join room when initial url has room token
+  useEffect(() => {
+    if(collabApi) {
+      const search = new URLSearchParams(window.location.search)
+      if(search.has('room')) {
+        handleJoinToken(search.get('room')!);
+      }
+    }
+  }, [collabApi]);
+
   const handleLogin = useCallback((userName: string, email: string) => {
     setPage('loading');
     console.log('Logged in', userName, email);
@@ -76,6 +105,7 @@ export function App() {
           setRoomToken(token);
           setPage('editor');
         } else {
+          history.pushState({}, '', location.pathname);
           setError('Error joining room, please check the token');
           setPage('startButtons');
         }
@@ -88,6 +118,7 @@ export function App() {
 
   useEffect(() => {
     if (roomToken) {
+      history.pushState({}, '', `${location.pathname}?room=${roomToken}`);
       setPage('editor')
     }
   }, [roomToken]);
