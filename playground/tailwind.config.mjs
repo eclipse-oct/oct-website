@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = require('tailwindcss/colors')
 const baseConfig = require('../tailwind/base.tailwind.config')
 
 export default {

@@ -8,7 +8,7 @@ import { MonacoCollabApi } from "open-collaboration-monaco";
 import { MonacoEditor } from "./MonacoEditor.js";
 import { RoomInfo } from "./RoomInfo.js";
 import { FileInfo } from "./FileInfo.js";
-
+import { useState } from "react";
 export type MonacoEditorPageProps = {
   roomToken: string;
   collabApi: MonacoCollabApi;

@@ -12,15 +12,22 @@ export type FileInfoProps = {
 }
 
 export const FileInfo = ({collabApi}: FileInfoProps) => {
-  const [fileName, setFileName] = useState('playground.txt');
+  const [fileName, setFileName] = useState(collabApi.getFileName() ?? 'playground.txt');
   const [isHost, setIsHost] = useState<boolean | undefined>();
   const [isDirty, setIsDirty] = useState(false);
-  const [originalFileName, setOriginalFileName] = useState('playground.txt');
+  const [originalFileName, setOriginalFileName] = useState(collabApi.getFileName() ?? 'playground.txt');
+  const [roomName, setRoomName] = useState<string>(collabApi.getRoomName() ?? '');
 
   useEffect(() => {
     collabApi.getUserData().then(ud => {
         setIsHost(ud?.me.host);
     })
+    collabApi.onFileNameChange(fileName => {
+      setFileName(fileName);
+      setOriginalFileName(fileName);
+      setIsDirty(false);
+    });
+
   }, [collabApi]);
 
   const handleFileNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,8 +37,8 @@ export const FileInfo = ({collabApi}: FileInfoProps) => {
   };
 
   const handleSave = () => {
-    // Dummy function for now
     console.log('Saving file name:', fileName);
+    collabApi.setFileName(fileName);
     setOriginalFileName(fileName);
     setIsDirty(false);
   };
@@ -43,6 +50,7 @@ export const FileInfo = ({collabApi}: FileInfoProps) => {
       {isHost ? (
         <>
           <div className="relative flex-1">
+            <div className="mb-1 text-sm text-gray-500">{roomName}</div>
             <input
               type="text"
               value={fileName}
@@ -73,8 +81,11 @@ export const FileInfo = ({collabApi}: FileInfoProps) => {
           </button>
         </>
       ) : (
-        <div className="px-3 py-2 border border-gray-300 rounded">
-          {fileName}
+        <div className="flex flex-col">
+          <div className="text-sm text-gray-500">{roomName}</div>
+          <div className="px-3 py-2 border border-gray-300 rounded">
+            {fileName}
+          </div>
         </div>
       )}
     </div>

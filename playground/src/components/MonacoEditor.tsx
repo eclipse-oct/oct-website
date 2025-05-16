@@ -23,7 +23,7 @@ export function MonacoEditor(props: MonacoEditorProps) {
     }, [props.collabApi]);
 
     return <MonacoEditorReactComp
-        className="h-full w-full grow"
+        className="w-full h-full grow"
         wrapperConfig={
             {
                 $type: 'classic',
