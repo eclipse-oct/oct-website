@@ -23,6 +23,7 @@ export function App() {
   const [token, setToken] = useState('');
   const [roomToken, setRoomToken] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
+  const [authenticated, setAuthenticated] = useState(false);
 
   const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
     setToken(token);
@@ -39,17 +40,26 @@ export function App() {
           return Promise.resolve(true);
         }
       },
-      loginPageOpener
+      loginPageOpener,
+      useCookieAuth: true,
     });
-    setCollabApi(collabApi);
+    checkAndGetAuthentication(collabApi).then(authenticated => {
+      setAuthenticated(authenticated);
+      setCollabApi(collabApi);
+    });
   }, []);
 
   useEffect(() => {
     const setInitialPage = () => {
       if(collabApi) {
+        const task = getSavedTask()
         const search = new URLSearchParams(window.location.search)
         if(search.has('room')) {
           handleJoinToken(search.get('room')!);
+        } else if(task === 'create') {
+            handleCreateRoom();
+        } else if(typeof task === 'string') {
+            handleJoinToken(task);
         } else {
           // TODO fire leave room event if connected
           setPage('startButtons');
@@ -81,7 +91,9 @@ export function App() {
   const handleCreateRoom = useCallback(() => {
     setError(undefined);
     setPage('loading');
+    setTask('create');
     collabApi && collabApi.createRoom().then(roomToken => {
+      setTask()
       if(roomToken) {
         console.log('Room created');
         setRoomToken(roomToken);
@@ -97,19 +109,27 @@ export function App() {
     setPage('joinInput');
   }, []);
 
+  const handleLogout = useCallback(() => {
+    collabApi?.logout().then(() => {
+      setAuthenticated(false);
+    });
+  }, [collabApi, setAuthenticated]);
+
   const handleJoinToken = useCallback((token: string) => {
     setPage('loading');
-      collabApi && collabApi.joinRoom(token).then(res => {
-        if (res) {
-          console.log('Joined room');
-          setRoomToken(token);
-          setPage('editor');
-        } else {
-          history.pushState({}, '', location.pathname);
-          setError('Error joining room, please check the token');
-          setPage('startButtons');
-        }
-      })
+    setTask(token);
+    collabApi && collabApi.joinRoom(token).then(res => {
+      setTask()
+      if (res) {
+        console.log('Joined room');
+        setRoomToken(token);
+        setPage('editor');
+      } else {
+        history.pushState({}, '', location.pathname);
+        setError('Error joining room, please check the token');
+        setPage('startButtons');
+      }
+    })
   }, [collabApi]);
 
   const handleBack = useCallback(() => {
@@ -140,7 +160,7 @@ export function App() {
         <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
       </div>;
       default:
-        return <StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />;
+        return <StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} authenticated={authenticated} onLogout={handleLogout} />;
     }
   }
 
@@ -158,4 +178,40 @@ export function Spinner() {
     <div className="flex justify-center items-center h-full">
         <div className="animate-spin rounded-full h-[64px] w-[64px] border-4 border-b-transparent border-eminence border-solid"></div>
     </div>  );
+}
+
+async function checkAndGetAuthentication(collabApi: MonacoCollabApi): Promise<boolean> {
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (token) {
+    window.history.replaceState({}, '', window.location.pathname);
+    const res = await fetch(SERVER_URL + `/api/login/poll/${token}`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        useCookie: true,
+      })
+    })
+    if (!res.ok) {
+      console.error('Failed to get auth token', res.statusText);
+      return false;
+    }
+    return true;
+  }
+
+  return collabApi.isLoggedIn();
+}
+
+function getSavedTask(): string | undefined {
+  const task = localStorage.getItem('task');
+  if (task) {
+    return task;
+  }
+  return undefined;
+}
+
+function setTask(task?: string) {
+  task ? localStorage.setItem('task', task) : localStorage.removeItem('task');
 }

@@ -17,8 +17,6 @@
     "playground"
   ],
   "overrides": {
-    "monaco-editor": {
-      "@codingame/monaco-vscode-editor-api": "~15.0.3"
-    }
+    "monaco-editor": "@codingame/monaco-vscode-editor-api@~15.0.3"
   }
 }
