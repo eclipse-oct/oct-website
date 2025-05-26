@@ -63,9 +63,9 @@ export function Login(props: LoginProps) {
                 </div>
             <div className="flex flex-col space-y-4">
                 <OAuthButton icon="/assets/github-mark.svg" alt="GitHub logo" text="Log in with GitHub" 
-                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/github" />
+                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/github" termsAccepted={termsAccepted}/>
                 <OAuthButton icon="/assets/google-g.svg" alt="Google logo" text="Log in with Google" 
-                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/google" />
+                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/google" termsAccepted={termsAccepted}/>
 
                 <hr className="border-gray-300" />
 
@@ -110,10 +110,11 @@ interface OAuthButtonProps {
     serverUrl: string;
     endpoint: string;
     token: string;
+    termsAccepted?: boolean;
 }
 
-function OAuthButton({icon, text, alt, serverUrl, endpoint, token}: OAuthButtonProps) {
-    return <a href={`${serverUrl}${endpoint}?token=${token}&redirect=${window.location.href}`} 
+function OAuthButton({icon, text, alt, serverUrl, endpoint, token, termsAccepted}: OAuthButtonProps) {
+    return <a style={termsAccepted ? {} : {opacity: 0.5, pointerEvents: 'none', cursor: 'default'}} href={`${serverUrl}${endpoint}?token=${token}&redirect=${window.location.href}`} 
                 id="login-github">
         <div className="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
             <img src={icon} alt={alt} className="w-7 h-7 mr-2"/>
