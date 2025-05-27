@@ -148,15 +148,15 @@ export function App() {
       case 'loading':
         return <Spinner />;
       case 'login':
-        return <div className="w-full h-full flex justify-center items-center">
+        return <div className="flex items-center justify-center w-full h-full">
           <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
         </div>
       case 'editor':
-        return <div className="w-full flex grow min-h-[calc(100vh-110px-56px)] ">
+        return <div className="flex w-full grow">
           <MonacoEditorPage roomToken={roomToken!} collabApi={collabApi!} />
         </div>;
       case 'joinInput':
-        return <div className="w-full h-full flex justify-center items-center grow">
+        return <div className="flex items-center justify-center w-full h-full grow">
         <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
       </div>;
       default:
@@ -164,18 +164,31 @@ export function App() {
     }
   }
 
+  const content = () => {
+    return (
+      <>
+        {renderCurrentPage()}
+        {error && <div className="p-4 text-center text-red-500">{error}</div>}
+      </>
+    )
+  }
+
+  const container = () => {
+    return (
+      <div className="flex flex-col items-center justify-center h-full font-urbanist grow">
+        {content()}
+      </div>
+    )
+  }
 
   return (
-    <div className="flex flex-col justify-center items-center h-full font-urbanist grow">
-      {renderCurrentPage()}
-      {error && <div className="text-center p-4 text-red-500">{error}</div>}
-    </div>
+    page === 'editor' ? content() : container()
   );
 }
 
 export function Spinner() {
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-[64px] w-[64px] border-4 border-b-transparent border-eminence border-solid"></div>
     </div>  );
 }
