@@ -197,15 +197,12 @@ async function checkAndGetAuthentication(collabApi: MonacoCollabApi): Promise<bo
   const token = new URLSearchParams(window.location.search).get('token');
   if (token) {
     window.history.replaceState({}, '', window.location.pathname);
-    const res = await fetch(SERVER_URL + `/api/login/poll/${token}`, {
+    const res = await fetch(SERVER_URL + `/api/login/poll/${token}?useCookie=true`, {
       credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
-        useCookie: true,
-      })
     })
     if (!res.ok) {
       console.error('Failed to get auth token', res.statusText);
