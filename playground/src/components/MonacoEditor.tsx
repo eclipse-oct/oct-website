@@ -4,6 +4,7 @@
 // terms of the MIT License, which is available in the project root.
 // ******************************************************************************
 
+import '@codingame/monaco-vscode-standalone-languages';
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
 import { MonacoCollabApi } from "open-collaboration-monaco";
 import { useCallback } from "react";
