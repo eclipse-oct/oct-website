@@ -9,9 +9,10 @@ import { MonacoCollabApi } from "open-collaboration-monaco";
 
 export type FileInfoProps = {
   collabApi: MonacoCollabApi;
+  onFileNameChange: (fileName: string) => void;
 }
 
-export const FileInfo = ({collabApi}: FileInfoProps) => {
+export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
   const [fileName, setFileName] = useState(collabApi.getFileName() ?? 'playground.txt');
   const [isHost, setIsHost] = useState<boolean | undefined>();
   const [isDirty, setIsDirty] = useState(false);
@@ -26,6 +27,7 @@ export const FileInfo = ({collabApi}: FileInfoProps) => {
       setFileName(fileName);
       setOriginalFileName(fileName);
       setIsDirty(false);
+      onFileNameChange(fileName);
     });
 
   }, [collabApi]);
@@ -41,6 +43,7 @@ export const FileInfo = ({collabApi}: FileInfoProps) => {
     collabApi.setFileName(fileName);
     setOriginalFileName(fileName);
     setIsDirty(false);
+    onFileNameChange(fileName);
   };
 
   const isFileNameValid = fileName.trim().length > 0;

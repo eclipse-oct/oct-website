@@ -17,10 +17,10 @@
     "install:links": "npm install --install-links"
   },
   "dependencies": {
-    "@codingame/monaco-vscode-standalone-languages": "~15.0.3",
-    "@typefox/monaco-editor-react": "6.6.0",
-    "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@~15.0.3",
-    "open-collaboration-monaco": "0.3.1",
+    "@codingame/monaco-vscode-standalone-languages": "~17.1.2",
+    "@typefox/monaco-editor-react": "6.8.0",
+    "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@~17.1.2",
+    "open-collaboration-monaco": "^0.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.0.1"
