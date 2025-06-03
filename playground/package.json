@@ -7,10 +7,11 @@
   "scripts": {
     "dev": "vite",
     "dev:debug": "vite --force --debug",
-    "build": "npm run build:css && tsc --noEmit && esbuild --format=esm --bundle ./src/index.tsx --outdir=dist/assets && npm run copy-to-website",
+    "build": "npm run build:css && tsc --noEmit && npm run bundle:esbuild && npm run copy-to-website",
     "build:css": "tailwindcss -i ./style.css -o ./src/style.css --minify",
     "watch:css": "tailwindcss -i ./style.css -o ./src/style.css --watch",
-    "production:build": "npm run build && vite build",
+    "bundle:esbuild": "node esbuild.mjs",
+    "bundle:vite": "vite build",
     "copy-to-website": "shx cp -r ./dist/assets/* ../public/playground",
     "watch": "tsc --watch",
     "serve": "vite preview",
@@ -22,8 +23,7 @@
     "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@~17.1.2",
     "open-collaboration-monaco": "^0.3.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router": "^7.0.1"
+    "react-dom": "^18.3.1"
   },
   "volta": {
     "node": "20.19.2",
