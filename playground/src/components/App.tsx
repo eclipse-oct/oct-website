@@ -43,6 +43,9 @@ export function App() {
       loginPageOpener,
       useCookieAuth: true,
     });
+    window.onbeforeunload = () => {
+        collabApi?.leaveRoom();
+    }
     checkAndGetAuthentication(collabApi).then(authenticated => {
       setAuthenticated(authenticated);
       setCollabApi(collabApi);
