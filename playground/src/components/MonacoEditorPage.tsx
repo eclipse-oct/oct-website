@@ -66,7 +66,7 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                                 $type: 'classic',
                                 editorAppConfig: {
                                     editorOptions: {
-                                        language: 'javascript',
+                                        language: 'plaintext',
                                         value: ''
                                     }
                                 }

@@ -38,6 +38,12 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
     setIsDirty(newValue !== originalFileName);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && isFileNameValid && isDirty) {
+      handleSave();
+    }
+  };
+
   const handleSave = () => {
     console.log('Saving file name:', fileName);
     collabApi.setFileName(fileName);
@@ -59,6 +65,7 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
                 type="text"
                 value={fileName}
                 onChange={handleFileNameChange}
+                onKeyDown={handleKeyDown}
                 placeholder="Enter a file name"
                 className={`px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-eminence focus:border-transparent w-full ${
                     !isFileNameValid
