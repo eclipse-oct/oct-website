@@ -12,42 +12,14 @@ export default defineConfig({
             plugins: [tailwindcss()]
         }
     },
-    build: {
-        lib: {
-            entry: path.resolve(__dirname, 'src/index.tsx'),
-            name: 'playground',
-            fileName: 'playground',
-            formats: ['es'],
-          },
-  },
+    optimizeDeps: {
+        esbuildOptions: {
+            plugins: [
+                importMetaUrlPlugin,
+            ]
+        }
+    },
+    worker: {
+        format: 'es'
+    },
 })
-    // build: {
-    //     rollupOptions: {
-    //         input: {
-    //             index: path.resolve(__dirname, 'index.html')
-    //         }
-    //     },
-    //     commonjsOptions: {
-    //         include: [
-    //             /cookie/,
-    //             /lodash/,
-    //             /open-collaboration-protocol/,
-    //             /open-collaboration-yjs/,
-    //             /base64-js/,
-    //             /vscode-languageclient/,
-    //             /vscode-jsonrpc/,
-    //             /vscode-languageserver-protocol/
-    //         ],
-    //     }
-    // },
-    // optimizeDeps: {
-    //     esbuildOptions: {
-    //         plugins: [
-    //             importMetaUrlPlugin,
-    //         ]
-    //     },
-    //     include: [
-    //         'open-collaboration-protocol',
-    //         'open-collaboration-yjs'
-    //     ]
-    // }
