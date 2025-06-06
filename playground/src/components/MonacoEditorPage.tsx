@@ -12,6 +12,8 @@ import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
 import { MonacoEditorLanguageClientWrapper } from "monaco-editor-wrapper";
 import '@codingame/monaco-vscode-standalone-languages';
 import * as monaco from "monaco-editor";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export type MonacoEditorPageProps = {
     roomToken: string;
@@ -35,6 +37,11 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
         }
     }, [props.collabApi]);
 
+    const handleLeaveRoom = useCallback(() => {
+        props.collabApi.leaveRoom();
+        window.location.href = '/';
+    }, [props.collabApi]);
+
     const handleFileNameChange = useCallback((fileName: string) => {
         const langs = monaco.languages.getLanguages();
         // extract file extension from fileName
@@ -54,8 +61,9 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
 
     return (
         <div className="flex flex-col grow">
-            <div className="flex items-center p-4 bg-columbiaBlue">
+            <div className="flex items-center justify-between p-4 bg-darkBlue">
                 <FileInfo collabApi={props.collabApi} onFileNameChange={handleFileNameChange} />
+                <FontAwesomeIcon icon={faArrowRightFromBracket} className="cursor-pointer size-6" color="white" onClick={handleLeaveRoom} title="Leave session" />
             </div>
             <div className="flex grow">
                 <div className="flex-1 overflow-auto grow">

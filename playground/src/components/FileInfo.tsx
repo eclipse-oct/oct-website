@@ -84,16 +84,15 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                 >
-                    Save
+                    Apply
                 </button>
             </div>
           </div>
         </>
       ) : (
         <div className="flex flex-col">
-          <div className="text-sm text-gray-500">{roomName}</div>
-          <div className="px-3 py-2 border border-gray-300 rounded">
-            {fileName}
+          <div className="text-sm font-light text-columbiaBlue">
+            {roomName} &gt; {fileName.split('/').join(' > ')}
           </div>
         </div>
       )}

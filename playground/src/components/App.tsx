@@ -155,7 +155,7 @@ export function App() {
           <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
         </div>
       case 'editor':
-        return <div className="flex w-full grow">
+        return <div className="flex w-full grow font-urbanist">
           <MonacoEditorPage roomToken={roomToken!} collabApi={collabApi!} />
         </div>;
       case 'joinInput':
