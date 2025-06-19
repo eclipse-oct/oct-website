@@ -58,27 +58,29 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
     <div className="flex items-center gap-2">
       {isHost ? (
         <>
+          <div className="text-sm font-light text-columbiaBlue">
+            {roomName} &gt;
+          </div>
           <div className="relative flex-1">
-            <div className="mb-1 text-sm text-gray-500">{roomName}</div>
             <div className="flex items-center gap-2">
                 <input
-                type="text"
-                value={fileName}
-                onChange={handleFileNameChange}
-                onKeyDown={handleKeyDown}
-                placeholder="Enter a file name"
-                className={`px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-eminence focus:border-transparent w-full ${
-                    !isFileNameValid
-                    ? 'border-red-500'
-                    : isDirty
-                        ? 'border-yellow-500'
-                        : 'border-gray-300'
+                  type="text"
+                  value={fileName}
+                  onChange={handleFileNameChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Enter a file name"
+                  className={`px-2 py-0.5 border rounded focus:outline-none focus:ring-2 focus:ring-eminence focus:border-transparent w-full ${
+                      !isFileNameValid
+                      ? 'border-red-500'
+                      : isDirty
+                          ? 'border-yellow-500'
+                          : 'border-gray-300'
                 }`}
                 />
                 <button
                     onClick={handleSave}
                     disabled={!isFileNameValid || !isDirty}
-                    className={`px-4 py-2 rounded ${
+                    className={`px-4 py-0.5 rounded ${
                     isFileNameValid && isDirty
                         ? 'bg-eminence text-white hover:bg-eminence-dark'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -91,7 +93,8 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
         </>
       ) : (
         <div className="flex flex-col">
-          <div className="text-sm font-light text-columbiaBlue">
+          {/* Padding and minimum height to keep the size consistent with the host view */}
+          <div className="text-sm font-light text-columbiaBlue py-[5px] min-h-[30px]">
             {roomName} &gt; {fileName.split('/').join(' > ')}
           </div>
         </div>

@@ -13,6 +13,7 @@ export type RoomTokenInputProps = {
 
 export function RoomTokenInput(props: RoomTokenInputProps) {
     const [token, setToken] = useState('');
+
     const handleTokenChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setToken(event.target.value);
     }
@@ -20,6 +21,12 @@ export function RoomTokenInput(props: RoomTokenInputProps) {
     const submitToken = useCallback(() => {
         props.onToken(token);
     }, [props.onToken, token]);
+
+    const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            submitToken();
+        }
+    }, [submitToken]);
 
     return (
         <div className="flex justify-center items-center h-full">
@@ -29,6 +36,8 @@ export function RoomTokenInput(props: RoomTokenInputProps) {
                     type="text" placeholder="Room Token"
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleTokenChange}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
                 />
                 <button
                     className="bg-black hover:bg-gray-500 text-white font-bold py-2 px-4 rounded"

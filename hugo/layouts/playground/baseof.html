@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full font-sans text-base scroll-smooth">
+
+<head>
+    {{ partial "oct-head" . }}
+    <link rel="stylesheet" href="/playground/index.css">
+</head>
+
+<body class="flex flex-col min-h-screen m-0 bg-brightGray">
+    {{ block "playground" . }}
+    {{ end }}
+    <script type="module" src="/playground/index.js"></script>
+</body>
+
+</html>

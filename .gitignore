@@ -1,4 +1,6 @@
 node_modules/
 public/
 dist/
+/hugo/static/css/
+/playground/src/style.css
 .DS_Store
