@@ -61,7 +61,7 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
 
     return (
         <div className="flex flex-col grow">
-            <div className="flex items-center justify-between p-4 bg-darkBlue">
+            <div className="flex items-center justify-between px-6 py-3 bg-darkBlue">
                 <FileInfo collabApi={props.collabApi} onFileNameChange={handleFileNameChange} />
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className="cursor-pointer size-6" color="white" onClick={handleLeaveRoom} title="Leave session" />
             </div>
