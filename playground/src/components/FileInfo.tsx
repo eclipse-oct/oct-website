@@ -54,51 +54,45 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
 
   const isFileNameValid = fileName.trim().length > 0;
 
-  return (
-    <div className="flex items-center gap-2">
-      {isHost ? (
-        <>
-          <div className="text-sm font-light text-columbiaBlue">
-            {roomName} &gt;
-          </div>
-          <div className="relative flex-1">
-            <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={fileName}
-                  onChange={handleFileNameChange}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Enter a file name"
-                  className={`px-2 py-0.5 border rounded focus:outline-none focus:ring-2 focus:ring-eminence focus:border-transparent w-full ${
-                      !isFileNameValid
-                      ? 'border-red-500'
-                      : isDirty
-                          ? 'border-yellow-500'
-                          : 'border-gray-300'
-                }`}
-                />
-                <button
-                    onClick={handleSave}
-                    disabled={!isFileNameValid || !isDirty}
-                    className={`px-4 py-0.5 rounded ${
-                    isFileNameValid && isDirty
-                        ? 'bg-eminence text-white hover:bg-eminence-dark'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
-                >
-                    Apply
-                </button>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="flex flex-col">
-          {/* Padding and minimum height to keep the size consistent with the host view */}
-          <div className="text-sm font-light text-columbiaBlue py-[5px] min-h-[30px]">
-            {roomName} &gt; {fileName.split('/').join(' > ')}
-          </div>
+  if (isHost) {
+    return (
+      <div className="flex items-center gap-2">
+        <div className="text-sm font-light text-columbiaBlue">
+          <span>{roomName}</span><span className='pl-2'>&#8227;</span>
         </div>
-      )}
-    </div>
-  );
+        <input
+          type="text"
+          value={fileName}
+          onChange={handleFileNameChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Enter a file name"
+          className={`px-2 py-0.5 border rounded focus:outline-none focus:ring-2 focus:ring-eminence focus:border-transparent w-full ${
+              !isFileNameValid
+              ? 'border-red-500'
+              : isDirty
+                ? 'border-yellow-500'
+                : 'border-gray-300'
+          }`}
+        />
+        <button
+            onClick={handleSave}
+            disabled={!isFileNameValid || !isDirty}
+            className={`px-4 py-0.5 rounded ${
+            isFileNameValid && isDirty
+                ? 'bg-eminence text-white hover:bg-eminence-dark'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+        >
+            Apply
+        </button>
+      </div>
+    );
+  } else {
+    return (
+        <div className="text-sm font-light text-columbiaBlue py-[5px]">
+          <span>{roomName}</span>
+          {fileName.split('/').flatMap(p => [<span className='px-2'>&#8227;</span>, <span>{p}</span>])}
+        </div>
+    );
+  }
 };

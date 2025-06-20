@@ -7,7 +7,7 @@
 import { MonacoCollabApi } from "open-collaboration-monaco";
 import { RoomInfo } from "./RoomInfo.js";
 import { FileInfo } from "./FileInfo.js";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
 import { MonacoEditorLanguageClientWrapper } from "monaco-editor-wrapper";
 import '@codingame/monaco-vscode-standalone-languages';
@@ -66,14 +66,15 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className="cursor-pointer size-6" color="white" onClick={handleLeaveRoom} title="Leave session" />
             </div>
             <div className="flex grow">
-                <div className="flex-1 overflow-auto grow">
+                <div className="flex-1 relative">
                     <MonacoEditorReactComp
-                        className="w-full h-full grow"
+                        className="absolute inset-0"
                         wrapperConfig={
                             {
                                 $type: 'classic',
                                 editorAppConfig: {
                                     editorOptions: {
+                                        automaticLayout: true,
                                         language: 'plaintext',
                                         value: ''
                                     }
@@ -81,7 +82,7 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                             }
                         } onLoad={handleOnLoad} />
                 </div>
-                <div className="h-full p-4 w-60 bg-columbiaBlue">
+                <div className="h-full p-4 bg-columbiaBlue">
                     <RoomInfo collabApi={props.collabApi} roomToken={props.roomToken} />
                 </div>
             </div>

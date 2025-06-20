@@ -41,16 +41,16 @@ root.render(
     </main>
     <footer className="w-full h-[60px] flex items-center justify-center font-light text-white bg-eminence font-barlow text-xs md:text-base">
         <div className="flex justify-center items-center gap-3 md:gap-4 py-2 w-[90%] max-w-[1300px]">
-            <a href="http://www.eclipse.org/legal/privacy.php" className="text-center hover:underline">Privacy Policy</a>
+            <a href="https://www.eclipse.org/legal/privacy/" className="text-center hover:underline">Privacy Policy</a>
             <p className="md:px-2"> • </p>
-            <a href="http://www.eclipse.org/legal/termsofuse.php" className="text-center hover:underline">Terms of Use</a>
+            <a href="https://www.eclipse.org/legal/terms-of-use/" className="text-center hover:underline">Terms of Use</a>
             <p className="md:px-2"> • </p>
-            <a href="http://www.eclipse.org/legal/copyright.php" className="text-center hover:underline">Copyright Agent</a>
+            <a href="https://www.eclipse.org/legal/copyright/" className="text-center hover:underline">Copyright Agent</a>
             <p className="md:px-2"> • </p>
-            <a href="http://www.eclipse.org/legal" className="text-center hover:underline">Legal</a>
+            <a href="https://www.eclipse.org/legal" className="text-center hover:underline">Legal</a>
             <p className="md:px-2"> • </p>
             <div className="text-center">
-                &copy; 2025 by <a href="http://www.eclipse.org/" target="_blank" className="hover:underline">Eclipse
+                &copy; 2025 by <a href="https://www.eclipse.org/" target="_blank" className="hover:underline">Eclipse
                     Foundation</a>
             </div>
         </div>
