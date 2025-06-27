@@ -8,8 +8,9 @@ module.exports = {
         richBlack: '#020E22',
         columbiaBlue: '#CBD3E7',
         eminence: '#643B88',
-        brightGray: '#E6EAF4',
-        darkBlue: '#020E22'
+        octoLilac: '#746ED1',
+        brightGray: '#EDECFA',
+        darkBlue: '#160860'
       },
       fontFamily: {
         barlow: ['Barlow','sans-serif'],

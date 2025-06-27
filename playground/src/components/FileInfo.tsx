@@ -66,7 +66,7 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
           onChange={handleFileNameChange}
           onKeyDown={handleKeyDown}
           placeholder="Enter a file name"
-          className={`px-2 py-0.5 border rounded focus:outline-none focus:ring-2 focus:ring-eminence focus:border-transparent w-full ${
+          className={`px-2 py-0.5 border rounded focus:outline-none focus:ring-2 focus:ring-octoLilac focus:border-transparent w-full ${
               !isFileNameValid
               ? 'border-red-500'
               : isDirty
@@ -79,8 +79,8 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
             disabled={!isFileNameValid || !isDirty}
             className={`px-4 py-0.5 rounded ${
             isFileNameValid && isDirty
-                ? 'bg-eminence text-white hover:bg-eminence-dark'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? 'bg-eminence text-white hover:bg-darkBlue border border-octoLilac'
+                : 'bg-darkBlue text-octoLilac cursor-not-allowed border border-octoLilac'
             }`}
         >
             Apply
