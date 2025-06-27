@@ -18,7 +18,7 @@ root.render(
     <header className="w-full h-[70px] flex justify-center sticky bg-[#fefaf4] bg-[url(/assets/header-background.webp)] bg-cover bg-center">
         <div className="flex flex-wrap justify-between items-center py-2 w-[90%] max-w-[1300px]">
             <a href="/" className="no-underline">
-                <img src="/assets/oct-logo-acronym.png" alt="Open Collaboration Tools" className="h-[50px]" />
+                <img src="/assets/oct-logo-acronym.svg" alt="Open Collaboration Tools" className="h-[50px]" />
             </a>
             <div className="flex-grow"></div>
             <nav className="hidden md:flex items-center">
