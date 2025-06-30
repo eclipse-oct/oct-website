@@ -45,7 +45,7 @@ export function RoomTokenInput(props: RoomTokenInputProps) {
                     Submit
                 </button>
                 <button
-                    className="bg-none hover:bg-gray-500 hover:text-white text-columbiaBlue font-bold py-2 px-4 rounded"
+                    className="bg-none hover:bg-gray-500 hover:text-white text-lightLilac font-bold py-2 px-4 rounded"
                     onClick={props.onBack}>
                     Back
                 </button>

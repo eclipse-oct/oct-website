@@ -57,7 +57,7 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
   if (isHost) {
     return (
       <div className="flex items-center gap-2">
-        <div className="text-sm font-light text-columbiaBlue">
+        <div className="text-sm font-light text-darkBlue">
           <span>{roomName}</span><span className='pl-2'>&#8227;</span>
         </div>
         <input
@@ -79,8 +79,8 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
             disabled={!isFileNameValid || !isDirty}
             className={`px-4 py-0.5 rounded ${
             isFileNameValid && isDirty
-                ? 'bg-eminence text-white hover:bg-darkBlue border border-octoLilac'
-                : 'bg-darkBlue text-octoLilac cursor-not-allowed border border-octoLilac'
+                ? 'bg-darkBlue text-white hover:bg-gray-500'
+                : 'bg-darkBlue text-white opacity-30 cursor-not-allowed'
             }`}
         >
             Apply
@@ -89,9 +89,9 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
     );
   } else {
     return (
-        <div className="text-sm font-light text-columbiaBlue py-[5px]">
+        <div className="text-sm font-light text-darkBlue py-[5px]">
           <span>{roomName}</span>
-          {fileName.split('/').flatMap(p => [<span className='px-2'>&#8227;</span>, <span>{p}</span>])}
+          {fileName.split('/').flatMap(p => [<span key={`${p}/separator`} className='px-2'>&#8227;</span>, <span key={p}>{p}</span>])}
         </div>
     );
   }

@@ -87,7 +87,7 @@ export function Login(props: LoginProps) {
                     disabled={!termsAccepted}
                 />
                 <button
-                    className="bg-black enabled:hover:bg-gray-500 text-white font-bold py-2 px-4 rounded disabled:opacity-30"
+                    className="bg-darkBlue enabled:hover:bg-gray-500 text-white font-bold py-2 px-4 rounded disabled:opacity-30"
                     style={{opacity: (termsAccepted && userName) ? 1 : 0.5}}
                     onClick={login} disabled={!userName}>
                     Login

@@ -39,7 +39,7 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
 
     const handleLeaveRoom = useCallback(() => {
         props.collabApi.leaveRoom();
-        window.location.href = '/';
+        window.location.href = '/playground/';
     }, [props.collabApi]);
 
     const handleFileNameChange = useCallback((fileName: string) => {
@@ -60,13 +60,13 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
     }, []);
 
     return (
-        <div className="flex flex-col grow">
-            <div className="flex items-center justify-between px-6 py-3 bg-richBlack">
+        <div className="flex flex-col grow border-t-[2px] border-octoLilac">
+            <div className="flex items-center justify-between px-6 py-3 bg-lightLilac">
                 <FileInfo collabApi={props.collabApi} onFileNameChange={handleFileNameChange} />
-                <FontAwesomeIcon icon={faArrowRightFromBracket} className="cursor-pointer size-6" color="white" onClick={handleLeaveRoom} title="Leave session" />
+                <FontAwesomeIcon icon={faArrowRightFromBracket} className="cursor-pointer size-6" color="darkBlue" onClick={handleLeaveRoom} title="Leave session" />
             </div>
             <div className="flex grow">
-                <div className="flex-1 relative">
+                <div className="flex-1 relative border-t-[1px] border-octoLilac">
                     <MonacoEditorReactComp
                         className="absolute inset-0"
                         wrapperConfig={
@@ -82,7 +82,7 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                             }
                         } onLoad={handleOnLoad} />
                 </div>
-                <div className="h-full p-4 bg-columbiaBlue">
+                <div className="h-full p-4 bg-lightLilac text-richBlack">
                     <RoomInfo collabApi={props.collabApi} roomToken={props.roomToken} />
                 </div>
             </div>
