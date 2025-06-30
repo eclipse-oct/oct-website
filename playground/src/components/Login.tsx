@@ -48,7 +48,7 @@ export function Login(props: LoginProps) {
 
     return (
         <div className="flex flex-col justify-center items-center h-full">
-            <div className="flex gap-2 mb-4 items-center">
+            <div className="flex gap-2 items-center mb-4">
                     <input
                         type="checkbox"
                         checked={termsAccepted}
@@ -75,25 +75,25 @@ export function Login(props: LoginProps) {
                     value={userName}
                     style={{opacity: termsAccepted ? 1 : 0.5}}
                     type="text" placeholder="Username (required)"
-                    className="border border-gray-300 rounded-md p-2"
+                    className="p-2 rounded-md border border-gray-300"
                     onChange={handleUserNameChange}
                     disabled={!termsAccepted}
                 />
                 <input
                     type="email" placeholder="Email"
                     style={{opacity: termsAccepted ? 1 : 0.5}}
-                    className="border border-gray-300 rounded-md p-2"
+                    className="p-2 rounded-md border border-gray-300"
                     onChange={handleEmailChange}
                     disabled={!termsAccepted}
                 />
                 <button
-                    className="bg-black enabled:hover:bg-gray-500 text-white font-bold py-2 px-4 rounded disabled:opacity-30"
+                    className="px-4 py-2 font-bold text-white bg-black rounded enabled:hover:bg-gray-500 disabled:opacity-30"
                     style={{opacity: (termsAccepted && userName) ? 1 : 0.5}}
                     onClick={login} disabled={!userName}>
                     Login
                 </button>
                 <button
-                    className="bg-none hover:bg-gray-500 hover:text-white font-bold py-2 px-4 rounded"
+                    className="px-4 py-2 font-bold bg-none rounded hover:bg-gray-500 hover:text-white"
                     style={{opacity: 1}}
                     onClick={props.onBack}>
                     Back
@@ -114,11 +114,19 @@ interface OAuthButtonProps {
 }
 
 function OAuthButton({icon, text, alt, serverUrl, endpoint, token, termsAccepted}: OAuthButtonProps) {
-    return <a style={termsAccepted ? {} : {opacity: 0.5, pointerEvents: 'none', cursor: 'default'}} href={`${serverUrl}${endpoint}?token=${token}&redirect=${window.location.href}`}
-                id="login-github">
+
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        localStorage.setItem('loginprocess', 'true');
+        window.location.href = `${serverUrl}${endpoint}?token=${token}&redirect=${window.location.href}`;
+    }
+
+    return <div style={termsAccepted ? {} : {opacity: 0.5, pointerEvents: 'none', cursor: 'default'}}
+                id="login-github" onClick={handleClick}>
         <div className="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
-            <img src={icon} alt={alt} className="w-7 h-7 mr-2"/>
+            <img src={icon} alt={alt} className="mr-2 w-7 h-7"/>
             <span>{text}</span>
         </div>
-    </a>
+    </div>
 }
