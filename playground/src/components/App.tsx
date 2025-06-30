@@ -13,7 +13,8 @@ import { StartButtons } from "./StartButtons.js";
 import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
 
-const SERVER_URL = 'https://api.open-collab.tools';
+// const SERVER_URL = 'https://api.open-collab.tools';
+const SERVER_URL = 'http://localhost:8100';
 
 type pages = 'login' | 'editor' | 'startButtons' | 'joinInput' | 'loading';
 
@@ -69,7 +70,9 @@ export function App() {
         }
       }
   }
-  setInitialPage();
+  if(!localStorage.getItem('loginprocess')) {
+    setInitialPage();
+  }
   window.addEventListener('popstate', (event) => {
     setInitialPage();
   });
@@ -122,9 +125,12 @@ export function App() {
     setPage('loading');
     setTask(token);
     collabApi && collabApi.joinRoom(token).then(res => {
-      setTask()
+      if(!localStorage.getItem('loginprocess')) {
+        setTask()
+      }
       if (res) {
         console.log('Joined room');
+        localStorage.removeItem('loginprocess');
         setRoomToken(token);
         setPage('editor');
       } else {
@@ -151,7 +157,7 @@ export function App() {
       case 'loading':
         return <Spinner />;
       case 'login':
-        return <div className="flex items-center justify-center w-full h-full">
+        return <div className="flex justify-center items-center w-full h-full">
           <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
         </div>
       case 'editor':
@@ -159,7 +165,7 @@ export function App() {
           <MonacoEditorPage roomToken={roomToken!} collabApi={collabApi!} />
         </div>;
       case 'joinInput':
-        return <div className="flex items-center justify-center w-full h-full grow">
+        return <div className="flex justify-center items-center w-full h-full grow">
         <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
       </div>;
       default:
@@ -178,7 +184,7 @@ export function App() {
 
   const container = () => {
     return (
-      <div className="flex flex-col items-center justify-center h-full font-urbanist grow">
+      <div className="flex flex-col items-center justify-center h-full border-t-[3px] border-octoLilac font-urbanist grow">
         {content()}
       </div>
     )
@@ -191,7 +197,7 @@ export function App() {
 
 export function Spinner() {
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex justify-center items-center h-full">
         <div className="animate-spin rounded-full h-[64px] w-[64px] border-4 border-b-transparent border-eminence border-solid"></div>
     </div>  );
 }

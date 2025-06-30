@@ -12,6 +12,7 @@ const ctx = await esbuild.context({
         '.png': 'file',
         '.ttf': 'file'
     },
+    external: ['/assets/header-background.webp'],
     platform: 'browser',
     sourcemap: false,
     minify: true,
