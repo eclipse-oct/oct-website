@@ -23,9 +23,9 @@ root.render(
             <div className="flex-grow"></div>
             <nav className="hidden md:flex items-center">
                 <a href="/playground" className="ml-6 font-urbanist font-bold text-darkBlue hover:underline">Playground</a>
-                <a href="https://github.com/TypeFox/open-collaboration-tools/discussions" className="ml-6 font-urbanist font-bold text-darkBlue hover:underline">Community</a>
+                <a href="https://github.com/eclipse-oct/open-collaboration-tools/discussions" className="ml-6 font-urbanist font-bold text-darkBlue hover:underline">Community</a>
                 <a href="https://www.typefox.io" className="ml-6 font-urbanist font-bold text-darkBlue hover:underline">Support</a>
-                <a href="https://github.com/TypeFox/open-collaboration-tools" target="_blank" className="ml-6">
+                <a href="https://github.com/eclipse-oct/open-collaboration-tools" target="_blank" className="ml-6">
                     <img src="/assets/github-mark-header.svg" alt="GitHub Repository" className="w-[30px] h-[30px]" />
                 </a>
             </nav>
