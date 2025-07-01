@@ -75,17 +75,6 @@ export function App() {
   });
   }, [collabApi]);
 
-
-  // join room when initial url has room token
-  useEffect(() => {
-    if(collabApi) {
-      const search = new URLSearchParams(window.location.search)
-      if(search.has('room')) {
-        handleJoinToken(search.get('room')!);
-      }
-    }
-  }, [collabApi]);
-
   const handleLogin = useCallback((userName: string, email: string) => {
     setPage('loading');
     console.log('Logged in', userName, email);
