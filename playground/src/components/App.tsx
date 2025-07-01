@@ -178,7 +178,7 @@ export function App() {
 
   const container = () => {
     return (
-      <div className="flex flex-col items-center justify-center h-full font-urbanist grow">
+      <div className="flex flex-col items-center justify-center h-full border-t-[3px] border-octoLilac font-urbanist grow">
         {content()}
       </div>
     )
