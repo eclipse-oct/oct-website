@@ -17,7 +17,7 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
   const [isHost, setIsHost] = useState<boolean | undefined>();
   const [isDirty, setIsDirty] = useState(false);
   const [originalFileName, setOriginalFileName] = useState(collabApi.getFileName() ?? 'playground.txt');
-  const [roomName, setRoomName] = useState<string>(collabApi.getRoomName() ?? '');
+  const [roomName, setRoomName] = useState<string>(collabApi.getWorkspaceName() ?? '');
 
   useEffect(() => {
     collabApi.getUserData().then(ud => {
@@ -56,7 +56,7 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
 
   if (isHost) {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex gap-2 items-center">
         <div className="text-sm font-light text-darkBlue">
           <span>{roomName}</span><span className='pl-2'>&#8227;</span>
         </div>
