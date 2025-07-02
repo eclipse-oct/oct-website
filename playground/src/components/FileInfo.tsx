@@ -17,12 +17,15 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
   const [isHost, setIsHost] = useState<boolean | undefined>();
   const [isDirty, setIsDirty] = useState(false);
   const [originalFileName, setOriginalFileName] = useState(collabApi.getFileName() ?? 'playground.txt');
-  const [roomName, setRoomName] = useState<string>(collabApi.getWorkspaceName() ?? '');
+  const [roomName, setRoomName] = useState<string>('OCT Playground');
 
   useEffect(() => {
     collabApi.getUserData().then(ud => {
         setIsHost(ud?.me.host);
     })
+    collabApi.onUsersChanged(() => {
+      setRoomName(collabApi.getWorkspaceName() ?? '');
+    });
     collabApi.onFileNameChange(fileName => {
       setFileName(fileName);
       setOriginalFileName(fileName);
@@ -57,8 +60,8 @@ export const FileInfo = ({collabApi, onFileNameChange}: FileInfoProps) => {
   if (isHost) {
     return (
       <div className="flex gap-2 items-center">
-        <div className="text-sm font-light text-darkBlue">
-          <span>{roomName}</span><span className='pl-2'>&#8227;</span>
+        <div className="flex text-sm font-light text-darkBlue">
+          <div className='flex items-center min-w-max'>{roomName}</div><span className='pl-2'>&#8227;</span>
         </div>
         <input
           type="text"

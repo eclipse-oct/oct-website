@@ -89,6 +89,7 @@ export function App() {
     collabApi && collabApi.createRoom().then(roomToken => {
       if(roomToken) {
         console.log('Room created');
+        collabApi?.setWorkspaceName('OCT Playground');
         setRoomToken(roomToken);
       } else {
         setError('Error creating room');
