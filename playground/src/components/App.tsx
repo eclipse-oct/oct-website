@@ -25,6 +25,7 @@ export function App() {
   const [error, setError] = useState<string | undefined>();
   const [authenticated, setAuthenticated] = useState(false);
   const [currentAction, setCurrentAction] = useState<'create' | string | undefined>();
+  const [info, setInfo] = useState<string | undefined>();
 
   const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
     setToken(token);
@@ -39,6 +40,9 @@ export function App() {
         onUserRequestsAccess: (user: User) => {
           console.log('User requests access', user);
           return Promise.resolve(true);
+        },
+        statusReporter: info => {
+          setInfo(info.message);
         }
       },
       loginPageOpener,
@@ -142,9 +146,9 @@ export function App() {
   const renderCurrentPage = () => {
     switch (page) {
       case 'loading':
-        return <Spinner />;
+        return <Spinner info={info} />;
       case 'login':
-        return <div className="flex items-center justify-center w-full h-full">
+        return <div className="flex justify-center items-center w-full h-full">
           <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} currentAction={currentAction}/>
         </div>
       case 'editor':
@@ -152,7 +156,7 @@ export function App() {
           <MonacoEditorPage roomToken={roomToken!} collabApi={collabApi!} />
         </div>;
       case 'joinInput':
-        return <div className="flex items-center justify-center w-full h-full grow">
+        return <div className="flex justify-center items-center w-full h-full grow">
         <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
       </div>;
       default:
@@ -182,10 +186,11 @@ export function App() {
   );
 }
 
-export function Spinner() {
+export function Spinner({info}: {info?: string}) {
   return (
-    <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-[64px] w-[64px] border-4 border-b-transparent border-eminence border-solid"></div>
+    <div className="flex flex-col justify-center items-center h-full">
+        <div className="mb-2 w-16 h-16 rounded-full border-4 border-solid animate-spin border-b-transparent border-eminence"></div>
+        {info && <div className="text-sm text-center text-gray-500">{info}</div>}
     </div>  );
 }
 
