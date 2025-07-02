@@ -13,17 +13,18 @@ import { StartButtons } from "./StartButtons.js";
 import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
 
-const SERVER_URL = 'https://api.open-collab.tools';
+const SERVER_URL = 'http://localhost:8100';
 
 type pages = 'login' | 'editor' | 'startButtons' | 'joinInput' | 'loading';
 
 export function App() {
   const [collabApi, setCollabApi] = useState<MonacoCollabApi | null>(null);
-  const [page, setPage] = useState<pages>('startButtons');
+  const [page, setPage] = useState<pages>('loading');
   const [token, setToken] = useState('');
   const [roomToken, setRoomToken] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [authenticated, setAuthenticated] = useState(false);
+  const [currentAction, setCurrentAction] = useState<'create' | string | undefined>();
 
   const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
     setToken(token);
@@ -54,25 +55,22 @@ export function App() {
 
   useEffect(() => {
     const setInitialPage = () => {
-      if(collabApi) {
-        const task = getSavedTask()
         const search = new URLSearchParams(window.location.search)
-        if(search.has('room')) {
-          handleJoinToken(search.get('room')!);
-        } else if(task === 'create') {
+        if(!collabApi) {
+            setPage('loading');
+        } else if(search.has('room')) {
+            handleJoinToken(search.get('room')!);
+        } else if(search.has('create')) {
             handleCreateRoom();
-        } else if(typeof task === 'string') {
-            handleJoinToken(task);
         } else {
-          // TODO fire leave room event if connected
-          setPage('startButtons');
+            // TODO fire leave room event if connected
+            setPage('startButtons');
         }
-      }
-  }
-  setInitialPage();
-  window.addEventListener('popstate', (event) => {
+    }
     setInitialPage();
-  });
+    window.addEventListener('popstate', (event) => {
+        setInitialPage();
+    });
   }, [collabApi]);
 
   const handleLogin = useCallback((userName: string, email: string) => {
@@ -81,11 +79,10 @@ export function App() {
   }, []);
 
   const handleCreateRoom = useCallback(() => {
+    setCurrentAction('create');
     setError(undefined);
     setPage('loading');
-    setTask('create');
     collabApi && collabApi.createRoom().then(roomToken => {
-      setTask()
       if(roomToken) {
         console.log('Room created');
         setRoomToken(roomToken);
@@ -108,10 +105,9 @@ export function App() {
   }, [collabApi, setAuthenticated]);
 
   const handleJoinToken = useCallback((token: string) => {
+    setCurrentAction(token);
     setPage('loading');
-    setTask(token);
     collabApi && collabApi.joinRoom(token).then(res => {
-      setTask()
       if (res) {
         console.log('Joined room');
         setRoomToken(token);
@@ -141,7 +137,7 @@ export function App() {
         return <Spinner />;
       case 'login':
         return <div className="flex items-center justify-center w-full h-full">
-          <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} />
+          <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} currentAction={currentAction}/>
         </div>
       case 'editor':
         return <div className="flex w-full h-full grow font-urbanist">
@@ -186,9 +182,11 @@ export function Spinner() {
 }
 
 async function checkAndGetAuthentication(collabApi: MonacoCollabApi): Promise<boolean> {
-  const token = new URLSearchParams(window.location.search).get('token');
+  const query = new URLSearchParams(window.location.search)
+  const token = query.get('token');
   if (token) {
-    window.history.replaceState({}, '', window.location.pathname);
+    query.delete('token');
+    window.history.replaceState({}, '', `${window.location.pathname}?${query.toString()}`);
     const res = await fetch(SERVER_URL + `/api/login/poll/${token}?useCookie=true`, {
       credentials: 'include',
       method: 'POST',
@@ -206,14 +204,3 @@ async function checkAndGetAuthentication(collabApi: MonacoCollabApi): Promise<bo
   return collabApi.isLoggedIn();
 }
 
-function getSavedTask(): string | undefined {
-  const task = localStorage.getItem('task');
-  if (task) {
-    return task;
-  }
-  return undefined;
-}
-
-function setTask(task?: string) {
-  task ? localStorage.setItem('task', task) : localStorage.removeItem('task');
-}

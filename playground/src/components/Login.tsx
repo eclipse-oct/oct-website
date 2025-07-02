@@ -9,6 +9,8 @@ import { useCallback, useState } from "react";
 export type LoginProps = {
     token: string;
     serverUrl: string;
+    // info for the oauth login to determine the redirect url
+    currentAction?: 'create' | string | undefined;
     onLogin: (userName: string, email: string) => void;
     onBack: () => void;
 }
@@ -63,9 +65,11 @@ export function Login(props: LoginProps) {
                 </div>
             <div className="flex flex-col space-y-4">
                 <OAuthButton icon="/assets/github-mark.svg" alt="GitHub logo" text="Log in with GitHub"
-                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/github" termsAccepted={termsAccepted}/>
+                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/github"
+                    termsAccepted={termsAccepted} currentAction={props.currentAction}/>
                 <OAuthButton icon="/assets/google-g.svg" alt="Google logo" text="Log in with Google"
-                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/google" termsAccepted={termsAccepted}/>
+                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/google"
+                    termsAccepted={termsAccepted} currentAction={props.currentAction}/>
 
                 <hr className="border-gray-300" />
 
@@ -111,10 +115,19 @@ interface OAuthButtonProps {
     endpoint: string;
     token: string;
     termsAccepted?: boolean;
+    currentAction?: 'create' | string | undefined;
 }
 
-function OAuthButton({icon, text, alt, serverUrl, endpoint, token, termsAccepted}: OAuthButtonProps) {
-    return <a style={termsAccepted ? {} : {opacity: 0.5, pointerEvents: 'none', cursor: 'default'}} href={`${serverUrl}${endpoint}?token=${token}&redirect=${window.location.href}`}
+function OAuthButton({icon, text, alt, serverUrl, endpoint, token, termsAccepted, currentAction}: OAuthButtonProps) {
+    let query = ''
+    if( currentAction === 'create') {
+        query += 'create';
+    } else if (typeof currentAction === 'string') {
+        query += `room=${currentAction}`;
+    }
+
+    const redirect = `${window.location.origin}${window.location.pathname}?${query}`;
+    return <a style={termsAccepted ? {} : {opacity: 0.5, pointerEvents: 'none', cursor: 'default'}} href={`${serverUrl}${endpoint}?token=${token}&redirect=${redirect}`}
                 id="login-github">
         <div className="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-eminence rounded-xl cursor-pointer flex items-center border-none">
             <img src={icon} alt={alt} className="w-7 h-7 mr-2"/>
