@@ -23,7 +23,8 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@typefox/monaco-editor-react": "6.8.0",
     "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@~17.1.2",
-    "open-collaboration-monaco": "^0.3.2",
+    "open-collaboration-monaco": "^0.3.3",
+    "open-collaboration-yjs": "^0.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
