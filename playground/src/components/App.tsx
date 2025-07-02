@@ -63,8 +63,8 @@ export function App() {
         } else if(search.has('create')) {
             handleCreateRoom();
         } else {
-            // TODO fire leave room event if connected
             setPage('startButtons');
+            collabApi.leaveRoom()
         }
     }
     setInitialPage();
