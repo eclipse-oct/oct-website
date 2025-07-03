@@ -191,7 +191,7 @@ export function Spinner({info}: {info?: string}) {
   return (
     <div className="flex flex-col justify-center items-center h-full">
         <div className="mb-2 w-16 h-16 rounded-full border-4 border-solid animate-spin border-b-transparent border-eminence"></div>
-        {info && <div className="text-sm text-center text-gray-500">{info}</div>}
+        {info && <div className="mt-2 text-base text-center text-gray-500">{info}</div>}
     </div>  );
 }
 
