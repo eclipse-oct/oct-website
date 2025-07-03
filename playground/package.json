@@ -22,6 +22,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@typefox/monaco-editor-react": "6.8.0",
+    "monaco-languageclient": "9.7.0",
     "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@~17.1.2",
     "open-collaboration-monaco": "^0.3.3",
     "open-collaboration-yjs": "^0.3.1",

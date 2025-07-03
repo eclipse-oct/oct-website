@@ -8,6 +8,7 @@ import { MonacoCollabApi } from "open-collaboration-monaco";
 import { RoomInfo } from "./RoomInfo.js";
 import { FileInfo } from "./FileInfo.js";
 import { useCallback, useRef } from "react";
+import { useWorkerFactory } from 'monaco-languageclient/workerFactory';
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
 import { MonacoEditorLanguageClientWrapper } from "monaco-editor-wrapper";
 import '@codingame/monaco-vscode-standalone-languages';
@@ -77,6 +78,14 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                                         automaticLayout: true,
                                         language: 'plaintext',
                                         value: ''
+                                    },
+                                    monacoWorkerFactory: () => {
+                                        useWorkerFactory({
+                                            workerLoaders: {
+                                                // the editor worker is pre-bundled with esbuild
+                                                TextEditorWorker: () => new Worker('/playground/editor.worker.js', { type: 'module' })
+                                            }
+                                        });
                                     }
                                 }
                             }
