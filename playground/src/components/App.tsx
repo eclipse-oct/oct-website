@@ -90,6 +90,10 @@ export function App() {
         setError('Error creating room');
         setPage('startButtons');
       }
+    }).catch(err => {
+        console.error('Error creating room', err);
+        setError(err.message || 'Error creating room');
+        setPage('startButtons');
     });
   }, [collabApi]);
 
@@ -117,6 +121,10 @@ export function App() {
         setError('Error joining room, please check the token');
         setPage('startButtons');
       }
+    }).catch(err => {
+        console.error('Error joining room', err);
+        setError(err.message || 'Error joining room, please check the token');
+        setPage('startButtons');
     })
   }, [collabApi]);
 
