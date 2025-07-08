@@ -70,6 +70,9 @@ export function Login(props: LoginProps) {
                 <OAuthButton icon="/assets/google-g.svg" alt="Google logo" text="Log in with Google"
                     serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/google"
                     termsAccepted={termsAccepted} currentAction={props.currentAction}/>
+                <OAuthButton icon="/assets/eclipse-ide-logo.svg" alt="Eclipse logo" text="Log in with Eclipse"
+                    serverUrl={props.serverUrl} token={props.token} endpoint="/api/login/keycloak"
+                    termsAccepted={termsAccepted} currentAction={props.currentAction}/>
 
                 <hr className="border-gray-300" />
 
