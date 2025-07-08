@@ -37,6 +37,12 @@ type: oct
                         <span>Log in with GitHub</span>
                     </div>
                 </a>
+                <a href="https://api.open-collab.tools/api/login/keycloak" id="login-eclipse">
+                    <div class="px-3 py-2 font-barlow text-white text-[1.2rem] font-medium bg-darkBlue rounded-xl cursor-pointer flex items-center border-none">
+                         <img src="/assets/eclipse-mark.svg" alt="Eclipse logo" class="w-7 h-7 mr-2">
+                        <span>Log in with Eclipse</span>
+                    </div>
+                </a>
             </div>
         </div>
         <div class="login-section opacity-50 pointer-events-none">
@@ -66,6 +72,8 @@ type: oct
             loginGoogle.href += `?token=${token}`;
             const loginGitHub = document.getElementById('login-github');
             loginGitHub.href += `?token=${token}`;
+            const loginEclipse = document.getElementById('login-eclipse');
+            loginEclipse.href += `?token=${token}`;
         });
     }
     function login(event) {
