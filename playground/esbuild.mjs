@@ -1,16 +1,16 @@
 //@ts-check
 import * as esbuild from 'esbuild';
 
-const bundleWorker = async () => {
+const bundleWorker = async (input, outfile) => {
     await esbuild.build({
-        entryPoints: ['../node_modules/monaco-editor/esm/vs/editor/editor.worker.js'],
+        entryPoints: [input],
         bundle: true,
         treeShaking: true,
         minify: true,
         format: 'esm',
         allowOverwrite: true,
         logLevel: 'info',
-        outfile: './dist/assets/editor.worker.js'
+        outfile
     });
 };
 
@@ -35,4 +35,8 @@ const bundlePlayground = async () => {
 };
 
 await bundlePlayground();
-await bundleWorker();
+await bundleWorker('../node_modules/monaco-editor/esm/vs/editor/editor.worker.js', './dist/assets/editor.worker.js');
+await bundleWorker('../node_modules/@codingame/monaco-vscode-standalone-css-language-features/worker.js', './dist/assets/css.worker.js');
+await bundleWorker('../node_modules/@codingame/monaco-vscode-standalone-html-language-features/worker.js', './dist/assets/html.worker.js');
+await bundleWorker('../node_modules/@codingame/monaco-vscode-standalone-json-language-features/worker.js', './dist/assets/json.worker.js');
+await bundleWorker('../node_modules/@codingame/monaco-vscode-standalone-typescript-language-features/worker.js', './dist/assets/ts.worker.js');

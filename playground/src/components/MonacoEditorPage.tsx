@@ -12,6 +12,10 @@ import { useWorkerFactory } from 'monaco-languageclient/workerFactory';
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
 import { MonacoEditorLanguageClientWrapper } from "monaco-editor-wrapper";
 import '@codingame/monaco-vscode-standalone-languages';
+import '@codingame/monaco-vscode-standalone-css-language-features';
+import '@codingame/monaco-vscode-standalone-html-language-features';
+import '@codingame/monaco-vscode-standalone-json-language-features';
+import '@codingame/monaco-vscode-standalone-typescript-language-features';
 import * as monaco from "monaco-editor";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -81,9 +85,15 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                                     },
                                     monacoWorkerFactory: () => {
                                         useWorkerFactory({
+                                            // all workers are pre-bundled with esbuild
                                             workerLoaders: {
-                                                // the editor worker is pre-bundled with esbuild
-                                                TextEditorWorker: () => new Worker('/playground/editor.worker.js', { type: 'module' })
+                                                TextEditorWorker: () => new Worker('/playground/editor.worker.js', { type: 'module' }),
+                                                css: () => new Worker('/playground/css.worker.js', { type: 'module' }),
+                                                html: () => new Worker('/playground/html.worker.js', { type: 'module' }),
+                                                json: () => new Worker('/playground/json.worker.js', { type: 'module' }),
+                                                // both have to be defined otherwise this leads to errors
+                                                javascript: () => new Worker('/playground/ts.worker.js', { type: 'module' }),
+                                                typescript: () => new Worker('/playground/ts.worker.js', { type: 'module' })
                                             }
                                         });
                                     }
