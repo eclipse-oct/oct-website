@@ -17,8 +17,6 @@ import '@codingame/monaco-vscode-standalone-html-language-features';
 import '@codingame/monaco-vscode-standalone-json-language-features';
 import '@codingame/monaco-vscode-standalone-typescript-language-features';
 import * as monaco from "monaco-editor";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export type MonacoEditorPageProps = {
     roomToken: string;
@@ -29,7 +27,7 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
 
     const handleEditorReady = useCallback((editor: monaco.editor.IStandaloneCodeEditor) => {
-        if (!editorRef.current) {
+        if (!editorRef.current || editorRef.current !== editor) {
             editorRef.current = editor;
         }
     }, []);
@@ -42,34 +40,9 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
         }
     }, [props.collabApi]);
 
-    const handleLeaveRoom = useCallback(() => {
-        props.collabApi.leaveRoom();
-        window.location.href = '/playground/';
-    }, [props.collabApi]);
-
-    const handleFileNameChange = useCallback((fileName: string) => {
-        const langs = monaco.languages.getLanguages();
-        // extract file extension from fileName
-        const fileExtension = fileName.split('.').pop();
-        if (fileExtension) {
-          const language = langs.find(l => l.extensions?.includes('.' + fileExtension));
-          if (language) {
-            const model = editorRef.current?.getModel();
-            if (model) {
-              monaco.editor.setModelLanguage(model, language.id);
-            } else {
-              console.log('Model not found');
-            }
-          }
-        }
-    }, []);
-
     return (
         <div className="flex flex-col grow border-t-[2px] border-octoLilac">
-            <div className="flex items-center justify-between px-6 py-3 bg-lightLilac">
-                <FileInfo collabApi={props.collabApi} onFileNameChange={handleFileNameChange} />
-                <FontAwesomeIcon icon={faArrowRightFromBracket} className="cursor-pointer size-6" color="darkBlue" onClick={handleLeaveRoom} title="Leave session" />
-            </div>
+            <FileInfo collabApi={props.collabApi} editorRef={editorRef} />
             <div className="flex grow">
                 <div className="flex-1 relative border-t-[1px] border-octoLilac">
                     <MonacoEditorReactComp
