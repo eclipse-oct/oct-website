@@ -21,6 +21,7 @@ export const FileInfo = ({ collabApi, editorRef }: FileInfoProps) => {
     const [fileName, setFileName] = useState<string>(collabApi.getFileName() ?? 'playground.txt');
     const [originalFileName, setOriginalFileName] = useState(fileName);
     const [workspaceName, setWorkspaceName] = useState<string>('OCT Playground');
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         collabApi.getUserData().then(ud => {
@@ -37,18 +38,21 @@ export const FileInfo = ({ collabApi, editorRef }: FileInfoProps) => {
         });
     }, [collabApi]);
 
+    // The text in the file name input field has been changed by the user
     const handleFileNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         setFileName(newValue);
         setIsDirty(newValue !== originalFileName);
     };
 
+    // The user has pressed the Enter key in the file name input field
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && isFileNameValid && isDirty) {
             applyNewFileName(fileName);
         }
     };
 
+    // The user has clicked the "Apply" button
     const handleApply = () => {
         applyNewFileName(fileName);
     };
@@ -60,7 +64,7 @@ export const FileInfo = ({ collabApi, editorRef }: FileInfoProps) => {
         updateModelLanguage(fileName);
     };
 
-    // Update language based on file extension
+    // Update language support and highlighting based on file extension
     const updateModelLanguage = (fileName: string) => {
         const fileExtension = fileName.split('.').pop();
         if (fileExtension) {
@@ -77,11 +81,13 @@ export const FileInfo = ({ collabApi, editorRef }: FileInfoProps) => {
         }
     };
 
+    // The user has clicked the "Leave Session" button
     const handleLeaveRoom = useCallback(() => {
         collabApi.leaveRoom();
         window.location.href = '/playground/';
     }, [collabApi]);
 
+    // The user has clicked the "Open File" button
     const handleOpenFile = useCallback(async () => {
         try {
             const [fileHandle] = await window.showOpenFilePicker();
@@ -103,6 +109,36 @@ export const FileInfo = ({ collabApi, editorRef }: FileInfoProps) => {
         }
     }, [collabApi, editorRef]);
 
+    // Fallback for browsers that do not support the File System Access API
+    const handleOpenFileFallback = useCallback(() => {
+        fileInputRef.current?.click();
+    }, []);
+
+    const handleFileInputChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const content = await file.text();
+            const model = editorRef.current?.getModel();
+            if (model) {
+                model.setValue(content);
+
+                const newFileName = file.name;
+                setFileName(newFileName);
+                applyNewFileName(newFileName);
+            } else {
+                console.error('Cannot open file: editor not ready');
+            }
+        } catch (error) {
+            console.error('Error reading file:', error);
+        }
+
+        // Reset the input value so the same file can be selected again
+        event.target.value = '';
+    }, [editorRef]);
+
+    // The user has clicked the "Save File" button
     const handleSaveFile = useCallback(async () => {
         try {
             const model = editorRef.current?.getModel();
@@ -119,6 +155,26 @@ export const FileInfo = ({ collabApi, editorRef }: FileInfoProps) => {
         } catch (error) {
             console.error('Save file picker cancelled or error occurred:', error);
         }
+    }, [fileName, editorRef]);
+
+    // Fallback for browsers that do not support the File System Access API
+    const handleSaveFileFallback = useCallback(() => {
+        const model = editorRef.current?.getModel();
+        if (!model) return;
+
+        const content = model.getValue();
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Clean up the URL object to prevent memory leaks
+        URL.revokeObjectURL(url);
     }, [fileName, editorRef]);
 
     const isFileNameValid = fileName.trim().length > 0;
@@ -157,12 +213,22 @@ export const FileInfo = ({ collabApi, editorRef }: FileInfoProps) => {
                     </button>
                 </div>
                 <div className="flex items-center gap-4">
-                    {typeof window.showOpenFilePicker === 'function' &&
+                    {typeof window.showOpenFilePicker === 'function' ? (
                         <FontAwesomeIcon icon={faFolderOpen} className="cursor-pointer size-6" color="darkBlue" onClick={handleOpenFile} title="Open File" />
-                    }
-                    {typeof window.showSaveFilePicker === 'function' &&
+                    ) : <>
+                        <FontAwesomeIcon icon={faFolderOpen} className="cursor-pointer size-6" color="darkBlue" onClick={handleOpenFileFallback} title="Open File" />
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            onChange={handleFileInputChange}
+                            style={{ display: 'none' }}
+                        />
+                    </>}
+                    {typeof window.showSaveFilePicker === 'function' ? (
                         <FontAwesomeIcon icon={faSave} className="cursor-pointer size-6" color="darkBlue" onClick={handleSaveFile} title="Save File" />
-                    }
+                    ) : (
+                        <FontAwesomeIcon icon={faSave} className="cursor-pointer size-6" color="darkBlue" onClick={handleSaveFileFallback} title="Save File" />
+                    )}
                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="cursor-pointer size-6" color="darkBlue" onClick={handleLeaveRoom} title="Leave Session" />
                 </div>
             </div>
