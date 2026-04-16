@@ -37,15 +37,15 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
         const monacoEditor = wrapper.getEditor();
         if (monacoEditor) {
             props.collabApi.setEditor(monacoEditor as any);
-            handleEditorReady(monacoEditor);
+            handleEditorReady(monacoEditor as unknown as monaco.editor.IStandaloneCodeEditor);
         }
     }, [props.collabApi]);
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 border-t-[2px] border-octoLilac">
+        <div className="flex flex-col grow min-h-0 border-t-[2px] border-octoLilac">
             <FileInfo collabApi={props.collabApi} editorRef={editorRef} />
-            <div className="flex flex-1 min-h-0">
-                <div className="flex-1 min-w-0 min-h-0 relative border-t-[1px] border-octoLilac">
+            <div className="flex grow min-h-0">
+                <div className="flex-1 relative border-t-[1px] border-octoLilac">
                     <MonacoEditorReactComp
                         className="absolute inset-0"
                         wrapperConfig={
@@ -75,11 +75,11 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                             }
                         } onLoad={handleOnLoad} />
                 </div>
-                <div className="flex flex-col w-80 shrink-0 min-h-0 p-4 bg-lightLilac text-richBlack border-l border-t border-octoLilac">
+                <div className="flex flex-col p-4 w-80 min-h-0 border-t border-l shrink-0 bg-lightLilac text-richBlack border-octoLilac">
                     <div className="shrink-0">
                         <RoomInfo collabApi={props.collabApi} roomToken={props.roomToken} />
                     </div>
-                    <div className="flex flex-col flex-1 min-h-0 mt-4 pt-4 border-t border-octoLilac">
+                    <div className="flex flex-col flex-1 pt-4 mt-4 min-h-0 border-t border-octoLilac">
                         <SessionChat collabApi={props.collabApi} />
                     </div>
                 </div>
