@@ -8,7 +8,8 @@ import { MonacoCollabApi } from "open-collaboration-monaco";
 import { RoomInfo } from "./RoomInfo.js";
 import { SessionChat } from "./SessionChat.js";
 import { FileInfo } from "./FileInfo.js";
-import { useCallback, useRef } from "react";
+import { DiffReview, ProposedChange } from "./DiffReview.js";
+import { useCallback, useMemo, useRef } from "react";
 import { useWorkerFactory } from 'monaco-languageclient/workerFactory';
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
 import { MonacoEditorLanguageClientWrapper } from "monaco-editor-wrapper";
@@ -22,6 +23,9 @@ import * as monaco from "monaco-editor";
 export type MonacoEditorPageProps = {
     roomToken: string;
     collabApi: MonacoCollabApi;
+    pendingDiffs: ProposedChange[];
+    onAcceptDiff: () => void;
+    onRejectDiff: () => void;
 }
 
 export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
@@ -41,6 +45,29 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
         }
     }, [props.collabApi]);
 
+    const wrapperConfig = useMemo(() => ({
+        $type: 'classic' as const,
+        editorAppConfig: {
+            editorOptions: {
+                automaticLayout: true,
+                language: 'plaintext',
+                value: ''
+            },
+            monacoWorkerFactory: () => {
+                useWorkerFactory({
+                    workerLoaders: {
+                        TextEditorWorker: () => new Worker('/playground/editor.worker.js', { type: 'module' }),
+                        css: () => new Worker('/playground/css.worker.js', { type: 'module' }),
+                        html: () => new Worker('/playground/html.worker.js', { type: 'module' }),
+                        json: () => new Worker('/playground/json.worker.js', { type: 'module' }),
+                        javascript: () => new Worker('/playground/ts.worker.js', { type: 'module' }),
+                        typescript: () => new Worker('/playground/ts.worker.js', { type: 'module' })
+                    }
+                });
+            }
+        }
+    }), []);
+
     return (
         <div className="flex flex-col grow min-h-0 border-t-[2px] border-octoLilac">
             <FileInfo collabApi={props.collabApi} editorRef={editorRef} />
@@ -48,32 +75,17 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                 <div className="flex-1 relative border-t-[1px] border-octoLilac">
                     <MonacoEditorReactComp
                         className="absolute inset-0"
-                        wrapperConfig={
-                            {
-                                $type: 'classic',
-                                editorAppConfig: {
-                                    editorOptions: {
-                                        automaticLayout: true,
-                                        language: 'plaintext',
-                                        value: ''
-                                    },
-                                    monacoWorkerFactory: () => {
-                                        useWorkerFactory({
-                                            // all workers are pre-bundled with esbuild
-                                            workerLoaders: {
-                                                TextEditorWorker: () => new Worker('/playground/editor.worker.js', { type: 'module' }),
-                                                css: () => new Worker('/playground/css.worker.js', { type: 'module' }),
-                                                html: () => new Worker('/playground/html.worker.js', { type: 'module' }),
-                                                json: () => new Worker('/playground/json.worker.js', { type: 'module' }),
-                                                // both have to be defined otherwise this leads to errors
-                                                javascript: () => new Worker('/playground/ts.worker.js', { type: 'module' }),
-                                                typescript: () => new Worker('/playground/ts.worker.js', { type: 'module' })
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        } onLoad={handleOnLoad} />
+                        wrapperConfig={wrapperConfig}
+                        onLoad={handleOnLoad} />
+                    {props.pendingDiffs.length > 0 && (
+                        <DiffReview
+                            currentDiff={props.pendingDiffs[0]}
+                            currentIndex={0}
+                            totalCount={props.pendingDiffs.length}
+                            onAccept={props.onAcceptDiff}
+                            onReject={props.onRejectDiff}
+                        />
+                    )}
                 </div>
                 <div className="flex flex-col p-4 w-80 min-h-0 border-t border-l shrink-0 bg-lightLilac text-richBlack border-octoLilac">
                     <div className="shrink-0">

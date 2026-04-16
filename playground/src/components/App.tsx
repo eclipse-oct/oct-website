@@ -6,14 +6,15 @@
 
 import { AuthMetadata, monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
 import { User } from "open-collaboration-monaco";
-import { useEffect, useState } from "react";
-import { useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Login } from "./Login.js";
 import { StartButtons } from "./StartButtons.js";
 import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
+import { ProposedChange } from "./DiffReview.js";
 
-const SERVER_URL = 'https://api.open-collab.tools';
+// const SERVER_URL = 'https://api.open-collab.tools';
+const SERVER_URL = 'http://localhost:8100';
 
 
 type pages = 'login' | 'editor' | 'startButtons' | 'joinInput' | 'loading';
@@ -27,6 +28,9 @@ export function App() {
     const [authenticated, setAuthenticated] = useState(false);
     const [currentAction, setCurrentAction] = useState<'create' | string | undefined>();
     const [info, setInfo] = useState<string | undefined>();
+    const [pendingDiffs, setPendingDiffs] = useState<ProposedChange[]>([]);
+    const pendingDiffsRef = useRef<ProposedChange[]>([]);
+    pendingDiffsRef.current = pendingDiffs;
 
     const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
         setToken(token);
@@ -44,6 +48,16 @@ export function App() {
                 },
                 statusReporter: info => {
                     setInfo(info.message);
+                },
+                onProposeChanges: (path, originalText, modifiedText, accept, reject) => {
+                    setPendingDiffs(prev => [...prev, {
+                        id: crypto.randomUUID(),
+                        path,
+                        originalText,
+                        modifiedText,
+                        accept,
+                        reject
+                    }]);
                 }
             },
             loginPageOpener,
@@ -134,6 +148,22 @@ export function App() {
         })
     }, [collabApi]);
 
+    const handleAcceptDiff = useCallback(() => {
+        const current = pendingDiffsRef.current[0];
+        if (current) {
+            current.accept();
+            setPendingDiffs(prev => prev.slice(1));
+        }
+    }, []);
+
+    const handleRejectDiff = useCallback(() => {
+        const current = pendingDiffsRef.current[0];
+        if (current) {
+            current.reject();
+            setPendingDiffs(prev => prev.slice(1));
+        }
+    }, []);
+
     const handleBack = useCallback(() => {
         setPage('startButtons');
     }, []);
@@ -155,7 +185,13 @@ export function App() {
                 </div>
             case 'editor':
                 return <div className="flex w-full h-full grow font-urbanist">
-                    <MonacoEditorPage roomToken={roomToken!} collabApi={collabApi!} />
+                    <MonacoEditorPage
+                        roomToken={roomToken!}
+                        collabApi={collabApi!}
+                        pendingDiffs={pendingDiffs}
+                        onAcceptDiff={handleAcceptDiff}
+                        onRejectDiff={handleRejectDiff}
+                    />
                 </div>;
             case 'joinInput':
                 return <div className="flex justify-center items-center w-full h-full grow">
