@@ -43,7 +43,40 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
             props.collabApi.setEditor(monacoEditor as any);
             handleEditorReady(monacoEditor as unknown as monaco.editor.IStandaloneCodeEditor);
         }
-    }, [props.collabApi]);
+
+        const tsDefaults = monaco.languages.typescript.typescriptDefaults;
+        const jsDefaults = monaco.languages.typescript.javascriptDefaults;
+        const jsxEmit = monaco.languages.typescript.JsxEmit.ReactJSX;
+
+        // TS-only syntax reported as JS diagnostics when a model is classified
+        // as JS script kind (e.g. because its URI has no .ts/.tsx extension).
+        // Example: "'interface' declarations can only be used in TypeScript files."
+        const tsOnlyInJsCodes = [8002, 8003, 8004, 8005, 8006, 8008, 8009, 8010, 8011, 8012, 8013];
+
+        tsDefaults.setDiagnosticsOptions({
+            noSemanticValidation: true,
+            noSyntaxValidation: false,
+            noSuggestionDiagnostics: true,
+            diagnosticCodesToIgnore: tsOnlyInJsCodes,
+        });
+        tsDefaults.setCompilerOptions({
+            ...tsDefaults.getCompilerOptions(),
+            jsx: jsxEmit,
+            allowJs: true,
+        });
+
+        jsDefaults.setDiagnosticsOptions({
+            noSemanticValidation: true,
+            noSyntaxValidation: false,
+            noSuggestionDiagnostics: true,
+            diagnosticCodesToIgnore: tsOnlyInJsCodes,
+        });
+        jsDefaults.setCompilerOptions({
+            ...jsDefaults.getCompilerOptions(),
+            jsx: jsxEmit,
+            allowJs: true,
+        });
+    }, [props.collabApi, handleEditorReady]);
 
     const wrapperConfig = useMemo(() => ({
         $type: 'classic' as const,
