@@ -31,6 +31,7 @@ export function App() {
     const [pendingDiffs, setPendingDiffs] = useState<ProposedChange[]>([]);
     const pendingDiffsRef = useRef<ProposedChange[]>([]);
     pendingDiffsRef.current = pendingDiffs;
+    const closeHandlerRegistered = useRef(false);
 
     const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
         setToken(token);
@@ -152,21 +153,33 @@ export function App() {
         const current = pendingDiffsRef.current[0];
         if (current) {
             current.accept();
+            collabApi?.closeProposal(current.path);
             setPendingDiffs(prev => prev.slice(1));
         }
-    }, []);
+    }, [collabApi]);
 
     const handleRejectDiff = useCallback(() => {
         const current = pendingDiffsRef.current[0];
         if (current) {
             current.reject();
+            collabApi?.closeProposal(current.path);
             setPendingDiffs(prev => prev.slice(1));
         }
-    }, []);
+    }, [collabApi]);
 
     const handleBack = useCallback(() => {
         setPage('startButtons');
     }, []);
+
+    useEffect(() => {
+        if (!collabApi || !roomToken || closeHandlerRegistered.current) {
+            return;
+        }
+        closeHandlerRegistered.current = true;
+        collabApi.onCloseProposal((path: string) => {
+            setPendingDiffs(prev => prev.filter(diff => diff.path !== path));
+        });
+    }, [collabApi, roomToken]);
 
     useEffect(() => {
         if (roomToken) {
