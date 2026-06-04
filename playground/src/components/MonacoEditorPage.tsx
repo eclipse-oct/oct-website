@@ -9,7 +9,7 @@ import { RoomInfo } from "./RoomInfo.js";
 import { SessionChat } from "./SessionChat.js";
 import { FileInfo } from "./FileInfo.js";
 import { DiffReview, ProposedChange } from "./DiffReview.js";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useWorkerFactory } from 'monaco-languageclient/workerFactory';
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
 import { MonacoEditorLanguageClientWrapper } from "monaco-editor-wrapper";
@@ -26,10 +26,34 @@ export type MonacoEditorPageProps = {
     pendingDiffs: ProposedChange[];
     onAcceptDiff: () => void;
     onRejectDiff: () => void;
+    onDismissDiff: () => void;
 }
 
 export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
+    const [externallyChanged, setExternallyChanged] = useState(false);
+    const currentDiff = props.pendingDiffs[0];
+
+    useEffect(() => {
+        setExternallyChanged(false);
+        const editor = editorRef.current;
+        if (!editor || !currentDiff) {
+            return;
+        }
+        const model = editor.getModel();
+        if (!model) {
+            return;
+        }
+        const checkChanged = () => {
+            if (model.getValue() !== currentDiff.originalText) {
+                setExternallyChanged(true);
+            }
+        };
+        // A yjs change may have already landed before this effect ran.
+        checkChanged();
+        const subscription = editor.onDidChangeModelContent(checkChanged);
+        return () => subscription.dispose();
+    }, [currentDiff?.id]);
 
     const handleEditorReady = useCallback((editor: monaco.editor.IStandaloneCodeEditor) => {
         if (!editorRef.current || editorRef.current !== editor) {
@@ -110,13 +134,16 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                         className="absolute inset-0"
                         wrapperConfig={wrapperConfig}
                         onLoad={handleOnLoad} />
-                    {props.pendingDiffs.length > 0 && (
+                    {currentDiff && (
                         <DiffReview
-                            currentDiff={props.pendingDiffs[0]}
+                            currentDiff={currentDiff}
                             currentIndex={0}
                             totalCount={props.pendingDiffs.length}
+                            externallyChanged={externallyChanged}
                             onAccept={props.onAcceptDiff}
                             onReject={props.onRejectDiff}
+                            onSwitchToEditor={props.onDismissDiff}
+                            onCloseDiff={props.onDismissDiff}
                         />
                     )}
                 </div>

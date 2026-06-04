@@ -20,11 +20,14 @@ export type DiffReviewProps = {
     currentDiff: ProposedChange;
     currentIndex: number;
     totalCount: number;
+    externallyChanged: boolean;
     onAccept: () => void;
     onReject: () => void;
+    onSwitchToEditor: () => void;
+    onCloseDiff: () => void;
 };
 
-export const DiffReview = ({ currentDiff, currentIndex, totalCount, onAccept, onReject }: DiffReviewProps) => {
+export const DiffReview = ({ currentDiff, currentIndex, totalCount, externallyChanged, onAccept, onReject, onSwitchToEditor, onCloseDiff }: DiffReviewProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const diffEditorRef = useRef<monaco.editor.IStandaloneDiffEditor>();
 
@@ -66,20 +69,44 @@ export const DiffReview = ({ currentDiff, currentIndex, totalCount, onAccept, on
                     </span>
                 </div>
                 <div className="flex gap-2">
-                    <button
-                        onClick={onAccept}
-                        className="px-4 py-1.5 text-sm font-medium text-white rounded bg-green-600 hover:bg-green-700 transition-colors"
-                    >
-                        Accept
-                    </button>
-                    <button
-                        onClick={onReject}
-                        className="px-4 py-1.5 text-sm font-medium text-white rounded bg-red-600 hover:bg-red-700 transition-colors"
-                    >
-                        Reject
-                    </button>
+                    {externallyChanged ? (
+                        <>
+                            <button
+                                onClick={onSwitchToEditor}
+                                className="px-4 py-1.5 text-sm font-medium text-white rounded bg-eminence hover:bg-eminence/90 transition-colors"
+                            >
+                                Switch to editor
+                            </button>
+                            <button
+                                onClick={onCloseDiff}
+                                className="px-4 py-1.5 text-sm font-medium rounded border border-octoLilac text-richBlack hover:bg-white transition-colors"
+                            >
+                                Close diff
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button
+                                onClick={onAccept}
+                                className="px-4 py-1.5 text-sm font-medium text-white rounded bg-green-600 hover:bg-green-700 transition-colors"
+                            >
+                                Accept
+                            </button>
+                            <button
+                                onClick={onReject}
+                                className="px-4 py-1.5 text-sm font-medium text-white rounded bg-red-600 hover:bg-red-700 transition-colors"
+                            >
+                                Reject
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
+            {externallyChanged && (
+                <div className="px-4 py-2 text-sm border-b shrink-0 bg-amber-50 border-amber-200 text-amber-900">
+                    This file was changed in the background (e.g. the change was accepted elsewhere). The diff below may be outdated.
+                </div>
+            )}
             <div ref={containerRef} className="flex-1 min-h-0" />
         </div>
     );

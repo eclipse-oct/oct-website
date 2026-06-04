@@ -167,6 +167,16 @@ export function App() {
         }
     }, [collabApi]);
 
+    const handleDismissDiff = useCallback(() => {
+        const current = pendingDiffsRef.current[0];
+        if (current) {
+            // Resets stopPropagation so local edits sync again, without broadcasting
+            // closeProposal (keeps the proposer's merge editor open).
+            collabApi?.cancelProposal(current.path);
+            setPendingDiffs(prev => prev.slice(1));
+        }
+    }, [collabApi]);
+
     const handleBack = useCallback(() => {
         setPage('startButtons');
     }, []);
@@ -204,6 +214,7 @@ export function App() {
                         pendingDiffs={pendingDiffs}
                         onAcceptDiff={handleAcceptDiff}
                         onRejectDiff={handleRejectDiff}
+                        onDismissDiff={handleDismissDiff}
                     />
                 </div>;
             case 'joinInput':
