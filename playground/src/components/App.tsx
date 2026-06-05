@@ -13,9 +13,7 @@ import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
 import { ProposedChange } from "./DiffReview.js";
 
-// const SERVER_URL = 'https://api.open-collab.tools';
-const SERVER_URL = 'http://localhost:8100';
-
+const SERVER_URL = 'https://api.open-collab.tools';
 
 type pages = 'login' | 'editor' | 'startButtons' | 'joinInput' | 'loading';
 
