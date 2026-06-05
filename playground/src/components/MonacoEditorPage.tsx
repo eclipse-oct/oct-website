@@ -142,7 +142,6 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
                             externallyChanged={externallyChanged}
                             onAccept={props.onAcceptDiff}
                             onReject={props.onRejectDiff}
-                            onSwitchToEditor={props.onDismissDiff}
                             onCloseDiff={props.onDismissDiff}
                         />
                     )}

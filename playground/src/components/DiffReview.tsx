@@ -23,11 +23,10 @@ export type DiffReviewProps = {
     externallyChanged: boolean;
     onAccept: () => void;
     onReject: () => void;
-    onSwitchToEditor: () => void;
     onCloseDiff: () => void;
 };
 
-export const DiffReview = ({ currentDiff, currentIndex, totalCount, externallyChanged, onAccept, onReject, onSwitchToEditor, onCloseDiff }: DiffReviewProps) => {
+export const DiffReview = ({ currentDiff, currentIndex, totalCount, externallyChanged, onAccept, onReject, onCloseDiff }: DiffReviewProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const diffEditorRef = useRef<monaco.editor.IStandaloneDiffEditor>();
 
@@ -70,20 +69,12 @@ export const DiffReview = ({ currentDiff, currentIndex, totalCount, externallyCh
                 </div>
                 <div className="flex gap-2">
                     {externallyChanged ? (
-                        <>
-                            <button
-                                onClick={onSwitchToEditor}
-                                className="px-4 py-1.5 text-sm font-medium text-white rounded bg-eminence hover:bg-eminence/90 transition-colors"
-                            >
-                                Switch to editor
-                            </button>
-                            <button
-                                onClick={onCloseDiff}
-                                className="px-4 py-1.5 text-sm font-medium rounded border border-octoLilac text-richBlack hover:bg-white transition-colors"
-                            >
-                                Close diff
-                            </button>
-                        </>
+                        <button
+                            onClick={onCloseDiff}
+                            className="px-4 py-1.5 text-sm font-medium rounded border border-octoLilac text-richBlack hover:bg-white transition-colors"
+                        >
+                            Close diff
+                        </button>
                     ) : (
                         <>
                             <button
