@@ -72,9 +72,17 @@ export const MonacoEditorPage = (props: MonacoEditorPageProps) => {
         const jsDefaults = monaco.languages.typescript.javascriptDefaults;
         const jsxEmit = monaco.languages.typescript.JsxEmit.ReactJSX;
 
-        // TS-only syntax reported as JS diagnostics when a model is classified
-        // as JS script kind (e.g. because its URI has no .ts/.tsx extension).
-        // Example: "'interface' declarations can only be used in TypeScript files."
+        // Monaco classifies a model as JavaScript (not TypeScript) whenever its URI
+        // lacks a .ts/.tsx extension. In this playground the model uses a generic URI,
+        // so the TS language service flags any TypeScript-only syntax (interfaces, type
+        // annotations, access modifiers, etc.) with "... can only be used in TypeScript
+        // files" errors. These are the diagnostic codes for exactly those errors; we add
+        // them to `diagnosticCodesToIgnore` below (for both the TS and JS defaults) so
+        // users can write TypeScript without spurious red squiggles.
+        // Codes (TS 8000-series): 8002 import=, 8003 export=, 8004 type params,
+        // 8005 implements, 8006 interface/type, 8008 type assertions, 8009 modifiers,
+        // 8010 type annotations, 8011 type arguments, 8012 property declarations,
+        // 8013 non-null assertions.
         const tsOnlyInJsCodes = [8002, 8003, 8004, 8005, 8006, 8008, 8009, 8010, 8011, 8012, 8013];
 
         tsDefaults.setDiagnosticsOptions({
