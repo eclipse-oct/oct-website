@@ -4,217 +4,94 @@
 // terms of the MIT License, which is available in the project root.
 // ******************************************************************************
 
-import { AuthMetadata, monacoCollab, MonacoCollabApi } from "open-collaboration-monaco";
-import { User } from "open-collaboration-monaco";
-import { useEffect, useState } from "react";
-import { useCallback } from "react";
 import { Login } from "./Login.js";
 import { StartButtons } from "./StartButtons.js";
 import { RoomTokenInput } from "./RoomTokenInput.js";
 import { MonacoEditorPage } from "./MonacoEditorPage.js";
-
-const SERVER_URL = 'https://api.open-collab.tools';
-
-type pages = 'login' | 'editor' | 'startButtons' | 'joinInput' | 'loading';
+import { SERVER_URL, usePlaygroundStore } from "../store/playgroundStore.js";
+import { useInitCollabApi } from "../hooks/useInitCollabApi.js";
+import { useRouting } from "../hooks/useRouting.js";
+import { useProposalSync } from "../hooks/useProposalSync.js";
 
 export function App() {
-  const [collabApi, setCollabApi] = useState<MonacoCollabApi | null>(null);
-  const [page, setPage] = useState<pages>('loading');
-  const [token, setToken] = useState('');
-  const [roomToken, setRoomToken] = useState<string | undefined>();
-  const [error, setError] = useState<string | undefined>();
-  const [authenticated, setAuthenticated] = useState(false);
-  const [currentAction, setCurrentAction] = useState<'create' | string | undefined>();
-  const [info, setInfo] = useState<string | undefined>();
+    useInitCollabApi();
+    useRouting();
+    useProposalSync();
 
-  const loginPageOpener = async (token: string, authenticationMetadata: AuthMetadata) => {
-    setToken(token);
-    setPage('login');
-    return true;
-  }
+    const page = usePlaygroundStore(state => state.page);
+    const error = usePlaygroundStore(state => state.error);
+    const info = usePlaygroundStore(state => state.info);
+    const token = usePlaygroundStore(state => state.token);
+    const roomToken = usePlaygroundStore(state => state.roomToken);
+    const collabApi = usePlaygroundStore(state => state.collabApi);
+    const authenticated = usePlaygroundStore(state => state.authenticated);
+    const currentAction = usePlaygroundStore(state => state.currentAction);
+    const pendingDiffs = usePlaygroundStore(state => state.pendingDiffs);
 
-  useEffect(() => {
-    const collabApi = monacoCollab({
-      serverUrl: SERVER_URL,
-      callbacks: {
-        onUserRequestsAccess: (user: User) => {
-          console.log('User requests access', user);
-          return Promise.resolve(true);
-        },
-        statusReporter: info => {
-          setInfo(info.message);
-        }
-      },
-      loginPageOpener,
-      useCookieAuth: true,
-    });
-    window.onbeforeunload = () => {
-        collabApi?.leaveRoom();
-    }
-    checkAndGetAuthentication(collabApi).then(authenticated => {
-      setAuthenticated(authenticated);
-      setCollabApi(collabApi);
-    });
-  }, []);
+    const handleLogin = usePlaygroundStore(state => state.handleLogin);
+    const handleBack = usePlaygroundStore(state => state.handleBack);
+    const handleJoinRoom = usePlaygroundStore(state => state.handleJoinRoom);
+    const handleCreateRoom = usePlaygroundStore(state => state.handleCreateRoom);
+    const handleJoinToken = usePlaygroundStore(state => state.handleJoinToken);
+    const handleLogout = usePlaygroundStore(state => state.handleLogout);
+    const acceptDiff = usePlaygroundStore(state => state.acceptDiff);
+    const rejectDiff = usePlaygroundStore(state => state.rejectDiff);
+    const dismissDiff = usePlaygroundStore(state => state.dismissDiff);
 
-  useEffect(() => {
-    const setInitialPage = () => {
-        const search = new URLSearchParams(window.location.search)
-        if(!collabApi) {
-            setPage('loading');
-        } else if(search.has('room')) {
-            handleJoinToken(search.get('room')!);
-        } else if(search.has('create')) {
-            handleCreateRoom();
-        } else {
-            setPage('startButtons');
-            collabApi.leaveRoom()
+    const renderCurrentPage = () => {
+        switch (page) {
+            case 'loading':
+                return <Spinner info={info} />;
+            case 'login':
+                return <div className="flex justify-center items-center w-full h-full">
+                    <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} currentAction={currentAction} />
+                </div>
+            case 'editor':
+                return <div className="flex w-full h-full grow font-urbanist">
+                    <MonacoEditorPage
+                        roomToken={roomToken!}
+                        collabApi={collabApi!}
+                        pendingDiffs={pendingDiffs}
+                        onAcceptDiff={acceptDiff}
+                        onRejectDiff={rejectDiff}
+                        onDismissDiff={dismissDiff}
+                    />
+                </div>;
+            case 'joinInput':
+                return <div className="flex justify-center items-center w-full h-full grow">
+                    <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
+                </div>;
+            default:
+                return <StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} authenticated={authenticated} onLogout={handleLogout} />;
         }
     }
-    setInitialPage();
-    window.addEventListener('popstate', (event) => {
-        setInitialPage();
-    });
-  }, [collabApi]);
 
-  const handleLogin = useCallback((userName: string, email: string) => {
-    setPage('loading');
-    console.log('Logged in', userName, email);
-  }, []);
-
-  const handleCreateRoom = useCallback(() => {
-    setCurrentAction('create');
-    setError(undefined);
-    setPage('loading');
-    collabApi && collabApi.createRoom().then(roomToken => {
-      if(roomToken) {
-        console.log('Room created');
-        collabApi?.setWorkspaceName('OCT Playground');
-        setRoomToken(roomToken);
-      } else {
-        setError('Error creating room');
-        setPage('startButtons');
-      }
-    }).catch(err => {
-        console.error('Error creating room', err);
-        setError(err.message || 'Error creating room');
-        setPage('startButtons');
-    });
-  }, [collabApi]);
-
-  const handleJoinRoom = useCallback(() => {
-    setError(undefined);
-    setPage('joinInput');
-  }, []);
-
-  const handleLogout = useCallback(() => {
-    collabApi?.logout().then(() => {
-      setAuthenticated(false);
-    });
-  }, [collabApi, setAuthenticated]);
-
-  const handleJoinToken = useCallback((token: string) => {
-    setCurrentAction(token);
-    setPage('loading');
-    collabApi && collabApi.joinRoom(token).then(res => {
-      if (res) {
-        console.log('Joined room');
-        setRoomToken(token);
-        setPage('editor');
-      } else {
-        history.pushState({}, '', location.pathname);
-        setError('Error joining room, please check the token');
-        setPage('startButtons');
-      }
-    }).catch(err => {
-        console.error('Error joining room', err);
-        setError(err.message || 'Error joining room, please check the token');
-        setPage('startButtons');
-    })
-  }, [collabApi]);
-
-  const handleBack = useCallback(() => {
-    setPage('startButtons');
-  }, []);
-
-  useEffect(() => {
-    if (roomToken) {
-      history.pushState({}, '', `${location.pathname}?room=${roomToken}`);
-      setPage('editor')
+    const content = () => {
+        return (
+            <>
+                {renderCurrentPage()}
+                {error && <div className="p-4 text-center text-red-500">{error}</div>}
+            </>
+        )
     }
-  }, [roomToken]);
 
-  const renderCurrentPage = () => {
-    switch (page) {
-      case 'loading':
-        return <Spinner info={info} />;
-      case 'login':
-        return <div className="flex justify-center items-center w-full h-full">
-          <Login token={token} serverUrl={SERVER_URL} onLogin={handleLogin} onBack={handleBack} currentAction={currentAction}/>
-        </div>
-      case 'editor':
-        return <div className="flex w-full h-full grow font-urbanist">
-          <MonacoEditorPage roomToken={roomToken!} collabApi={collabApi!} />
-        </div>;
-      case 'joinInput':
-        return <div className="flex justify-center items-center w-full h-full grow">
-        <RoomTokenInput onToken={handleJoinToken} onBack={handleBack} />
-      </div>;
-      default:
-        return <StartButtons onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} authenticated={authenticated} onLogout={handleLogout} />;
+    const container = () => {
+        return (
+            <div className="flex flex-col items-center justify-center h-full border-t-[3px] border-octoLilac font-urbanist grow">
+                {content()}
+            </div>
+        )
     }
-  }
 
-  const content = () => {
     return (
-      <>
-        {renderCurrentPage()}
-        {error && <div className="p-4 text-center text-red-500">{error}</div>}
-      </>
-    )
-  }
+        page === 'editor' ? content() : container()
+    );
+}
 
-  const container = () => {
+export function Spinner({ info }: { info?: string }) {
     return (
-      <div className="flex flex-col items-center justify-center h-full border-t-[3px] border-octoLilac font-urbanist grow">
-        {content()}
-      </div>
-    )
-  }
-
-  return (
-    page === 'editor' ? content() : container()
-  );
+        <div className="flex flex-col justify-center items-center h-full">
+            <div className="mb-2 w-16 h-16 rounded-full border-4 border-solid animate-spin border-b-transparent border-eminence"></div>
+            {info && <div className="mt-2 text-base text-center text-gray-500">{info}</div>}
+        </div>);
 }
-
-export function Spinner({info}: {info?: string}) {
-  return (
-    <div className="flex flex-col justify-center items-center h-full">
-        <div className="mb-2 w-16 h-16 rounded-full border-4 border-solid animate-spin border-b-transparent border-eminence"></div>
-        {info && <div className="mt-2 text-base text-center text-gray-500">{info}</div>}
-    </div>  );
-}
-
-async function checkAndGetAuthentication(collabApi: MonacoCollabApi): Promise<boolean> {
-  const query = new URLSearchParams(window.location.search)
-  const token = query.get('token');
-  if (token) {
-    query.delete('token');
-    window.history.replaceState({}, '', `${window.location.pathname}?${query.toString()}`);
-    const res = await fetch(SERVER_URL + `/api/login/poll/${token}?useCookie=true`, {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if (!res.ok) {
-      console.error('Failed to get auth token', res.statusText);
-      return false;
-    }
-    return true;
-  }
-
-  return collabApi.isLoggedIn();
-}
-
